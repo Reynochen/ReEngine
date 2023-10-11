@@ -10,3 +10,5 @@ target_link_libraries(${PROJECT_NAME}
     glfw
     glad
 )
+
+target_link_options(${PROJECT_NAME} PRIVATE -mwindows) #Off console

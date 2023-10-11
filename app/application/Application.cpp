@@ -59,7 +59,7 @@ void Application::updateDraw() {
 
 }
 
-Application* CreateApllication() {
+Application* CreateApplication() {
     Application* app = new Application;
     return app;
 }

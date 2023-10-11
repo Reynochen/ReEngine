@@ -12,6 +12,6 @@ public:
     void run();
 };
 
-Application* CreateApllication();
+Application* CreateApplication();
 
 #endif

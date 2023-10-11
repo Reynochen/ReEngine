@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
+#include "Camera.hpp"
+
 #include <math.h>
 #include <iostream>
 
@@ -17,12 +19,14 @@ Application::~Application() {
 }
 
 void Application::run() {
+    Camera camera;
+
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
         0.0f,  0.5f, 0.0f
     }; 
-    
+
     //Generate VBO
     unsigned int VBO;
     glGenBuffers(1, &VBO);  

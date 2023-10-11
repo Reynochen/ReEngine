@@ -1,7 +1,7 @@
 #include "application/Application.hpp"
 
 int main(int argc, char* argv[]) {
-    Application* app = CreateApllication();
+    Application* app = CreateApplication();
     app->run();
 
     delete app;

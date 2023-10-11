@@ -4,11 +4,13 @@ project(ReEngine)
 
 add_executable(${PROJECT_NAME} main.cpp application/application.cpp)
 
+#Don't forget adding new module here ↓
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Graphics
+    Camera
     glfw
     glad
 )
 
-target_link_options(${PROJECT_NAME} PRIVATE -mwindows) #Off console
+# target_link_options(${PROJECT_NAME} PRIVATE -mwindows) #Off console

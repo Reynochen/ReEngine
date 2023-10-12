@@ -54,8 +54,6 @@ void Application::run() {
             Window::shouldClose(true);
         }
 
-        glClear(GL_COLOR_BUFFER_BIT);
-
         shader.use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);

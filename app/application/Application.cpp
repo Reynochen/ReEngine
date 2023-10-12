@@ -10,6 +10,10 @@
 #include <math.h>
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 Application::Application() {
     Window::initialization(640, 480, "ReEngine");
     Events::initialization(Window::getWindow());
@@ -21,6 +25,12 @@ Application::~Application() {
 
 void Application::run() {
     Camera camera;
+
+    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+    vec = trans * vec;
+    std::cout << "\n" << vec.x << vec.y << vec.z << std::endl;
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,

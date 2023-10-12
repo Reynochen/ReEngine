@@ -12,6 +12,7 @@ target_link_libraries(${PROJECT_NAME}
     Events
     glfw
     glad
+    glm
 )
 
 # target_link_options(${PROJECT_NAME} PRIVATE -mwindows) #Off console

@@ -7,12 +7,22 @@ class Window {
     static GLFWwindow* _window;
     static int _width, _height;
 
+    static unsigned short _fpsLock;
+    static double _lastTime;
+
+    static void fpsLimit();
+    static void winSizeCallBack(GLFWwindow* window, int width, int height);
+
 public:
     static int initialization(int width, int height, const char* title);
     static int shouldClose();
     
     static void swapBuffers();
     static void terminate();
+
+    static int getWidth();
+    static int getHeight();
+
 };
 
 #endif

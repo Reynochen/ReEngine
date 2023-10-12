@@ -2,7 +2,7 @@
 
 Camera::Camera()
 {
-    std::cout << "Camera working!";
+    std::cout << "Camera working! :3";
 }
 
 Camera::~Camera()

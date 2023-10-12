@@ -9,6 +9,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Graphics
     Camera
+    Events
     glfw
     glad
 )

@@ -1,17 +1,18 @@
 #include "Application.hpp"
 
-#include "Graphics.hpp"
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
+#include "Graphics.hpp"
 #include "Camera.hpp"
+#include "Events.hpp"
 
 #include <math.h>
 #include <iostream>
 
 Application::Application() {
     Window::initialization(640, 480, "ReEngine");
-
+    Events::initialization(Window::getWindow());
 }
 
 Application::~Application() {
@@ -48,6 +49,11 @@ void Application::run() {
 
     while(!Window::shouldClose())
     {
+        /* Need will to create another place for all hotkey in engine */
+        if (Events::pressed(GLFW_KEY_ESCAPE)) {
+            Window::shouldClose(true);
+        }
+
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();

@@ -16,6 +16,7 @@ class Window {
 public:
     static int initialization(int width, int height, const char* title);
     static int shouldClose();
+    static void shouldClose(bool value);
     
     static void swapBuffers();
     static void terminate();
@@ -23,6 +24,7 @@ public:
     static int getWidth();
     static int getHeight();
 
+    static GLFWwindow* getWindow();
 };
 
 #endif

@@ -54,8 +54,15 @@ int Window::initialization(int width, int height, const char* title) {
     return 0;
 }
 
+GLFWwindow* Window::getWindow() {
+    return _window;
+}
+
 int Window::shouldClose() {
     return glfwWindowShouldClose(_window);
+}
+void Window::shouldClose(bool value) {
+    glfwSetWindowShouldClose(_window, true);
 }
 
 void Window::swapBuffers() {

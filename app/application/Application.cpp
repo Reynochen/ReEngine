@@ -54,8 +54,7 @@ void Application::run() {
     glEnableVertexAttribArray(0);
 
     //Create shader
-    /*Need adding debug and release version*/
-    Shader shader("D:\\.MyRepositories\\C++ Porjects\\.ReEngine\\res\\main.vs", "D:\\.MyRepositories\\C++ Porjects\\.ReEngine\\res\\main.fs");
+    Shader shader("res\\main.vs", "res\\main.fs");
 
     while(!Window::shouldClose())
     {

@@ -15,7 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Application::Application() {
-    Window::initialization(640, 480, "ReEngine");
+    Window::initialization(640, 480, "ReEngine", 0);
     Events::initialization(Window::getWindow());
 }
 
@@ -88,25 +88,26 @@ void Application::run() {
     Shader shader("res\\main.vs", "res\\main.fs");
     Camera camera;
 
+    glm::mat4 model;
+    glm::mat4 view;
+    glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1920.0f/1080.0f, 0.1f, 100.0f);
+    // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
+    shader.setMat4("projection", proj);
+
+    glClearColor(0.36, 0.78, 0.95, 0);
     while(!Window::shouldClose())
     {
         camera.update();
-        /* Need will to create another place for all hotkey in engine */
+
         if (Events::pressed(GLFW_KEY_ESCAPE)) {
             Window::shouldClose(true);
         }
 
-        glm::ortho(0.0f, 800.f, 0.0f, 600.9f, 0.1f, 100.0f);
-
-        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        // model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.5f));
 
-        glm::mat4 view = camera.getViewMatrix();
-
-        //(float)Window::getWidth()/(float)Window::getHeight()
-        glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1920.0f/1080.0f, 0.1f, 100.0f);
+        view = camera.getViewMatrix();
 
         shader.use();
         shader.setMat4("model", model);

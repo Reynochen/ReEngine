@@ -4,6 +4,7 @@
 #include <glfw/glfw3.h>
 
 #include "Window.hpp"
+#include <math.h>
 
 bool Events::keys[1037];
 
@@ -34,8 +35,8 @@ void Events::initialization(GLFWwindow* window) {
 
 void Events::cursorPosCallBack(GLFWwindow* window, double xpos, double ypos) {
     if(!firstMouse) {
-        deltaX = xpos - lastX;
-        deltaY = lastY - ypos;
+        deltaX += xpos - lastX;
+        deltaY += lastY - ypos;
     }
     
     lastX = xpos;
@@ -43,6 +44,7 @@ void Events::cursorPosCallBack(GLFWwindow* window, double xpos, double ypos) {
     
     firstMouse = false;
 }
+
 
 void Events::mouseButtonCallBack(GLFWwindow* window, int button, int action, int mods) {
     if(action == GLFW_PRESS)

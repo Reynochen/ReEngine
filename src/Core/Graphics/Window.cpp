@@ -10,7 +10,7 @@ int Window::_width, Window::_height;
 unsigned short Window::_fpsLock;
 double Window::_lastTime = 0;
 
-int Window::initialization(int width, int height, const char* title) {
+int Window::initialization(int width, int height, const char* title, int fpsLock) {
     if (!glfwInit()) {
         std::cout << "GLFW initialization failed.\n";
         return -1;
@@ -50,7 +50,7 @@ int Window::initialization(int width, int height, const char* title) {
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_BACK);
 
-    Window::_fpsLock = 0;
+    Window::_fpsLock = fpsLock;
 
     return 0;
 }

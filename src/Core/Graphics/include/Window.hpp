@@ -14,7 +14,7 @@ class Window {
     static void winSizeCallBack(GLFWwindow* window, int width, int height);
 
 public:
-    static int initialization(int width, int height, const char* title);
+    static int initialization(int width, int height, const char* title, int fpsLock = 144);
     static int shouldClose();
     static void shouldClose(bool value);
     

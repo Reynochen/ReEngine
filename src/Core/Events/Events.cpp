@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
+#include "Window.hpp"
+
 bool Events::keys[1037];
 
 bool Events::firstMouse = true;
@@ -27,7 +29,7 @@ void Events::initialization(GLFWwindow* window) {
     glfwSetCursorPosCallback(window, cursorPosCallBack);
 
     /* Cursor disable command */
-    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Events::cursorPosCallBack(GLFWwindow* window, double xpos, double ypos) {

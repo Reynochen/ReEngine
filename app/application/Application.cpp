@@ -24,7 +24,6 @@ Application::~Application() {
 }
 
 void Application::run() {
-    Camera camera;
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,
@@ -87,9 +86,11 @@ void Application::run() {
 
     //Create shader
     Shader shader("res\\main.vs", "res\\main.fs");
+    Camera camera;
 
     while(!Window::shouldClose())
     {
+        camera.update();
         /* Need will to create another place for all hotkey in engine */
         if (Events::pressed(GLFW_KEY_ESCAPE)) {
             Window::shouldClose(true);
@@ -100,23 +101,23 @@ void Application::run() {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.5f));
+        // model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.5f));
 
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 view = camera.getViewMatrix();
 
-        glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.1f, 100.0f);
+        //(float)Window::getWidth()/(float)Window::getHeight()
+        glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1920.0f/1080.0f, 0.1f, 100.0f);
 
+        shader.use();
         shader.setMat4("model", model);
         shader.setMat4("view", view);
         shader.setMat4("projection", proj);
 
-        shader.use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         
         Window::swapBuffers();
-        glfwPollEvents(); //Will need to create Events module
+        Events::pullEvents();
     }
 }
 

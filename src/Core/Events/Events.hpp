@@ -27,6 +27,8 @@ public:
 
     static float getDeltaX(), getDeltaY();
     static float getDeltaTime();
+    
+    static void update();
 };
 
 #endif

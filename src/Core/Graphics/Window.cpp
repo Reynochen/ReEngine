@@ -33,7 +33,8 @@ int Window::initialization(int width, int height, const char* title) {
 
     glfwMakeContextCurrent(_window);
     glfwSetWindowSizeCallback(_window, winSizeCallBack);
-    
+    glfwSwapInterval(0); //Vsync off
+
     if(!gladLoadGL()) {
         std::cout << "GLAD initialization failed.\n";
         glfwTerminate();
@@ -45,11 +46,11 @@ int Window::initialization(int width, int height, const char* title) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //Hide inside polygones
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_BACK);
+    // Hide inside polygones
+    glEnable(GL_DEPTH_TEST);
+    glFrontFace(GL_BACK);
 
-    Window::_fpsLock = 60;
+    Window::_fpsLock = 0;
 
     return 0;
 }
@@ -83,6 +84,7 @@ void Window::winSizeCallBack(GLFWwindow* window, int width, int height) {
 
 void Window::fpsLimit() {
     //Vsync on crutches
+    if(_fpsLock == 0) return;
     while(glfwGetTime() < _lastTime + 1.0/_fpsLock && _fpsLock != 0) {}
     _lastTime += 1.0/_fpsLock;
 }

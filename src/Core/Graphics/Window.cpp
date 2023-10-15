@@ -5,10 +5,12 @@
 #include <iostream>
 
 GLFWwindow* Window::_window;
+
 int Window::_width, Window::_height;
 
 unsigned short Window::_fpsLock;
 double Window::_lastTime = 0;
+
 
 int Window::initialization(int width, int height, const char* title, int fpsLock) {
     if (!glfwInit()) {

@@ -25,6 +25,7 @@ public:
     static int getHeight();
 
     static GLFWwindow* getWindow();
+
 };
 
 #endif

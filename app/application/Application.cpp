@@ -88,13 +88,14 @@ void Application::run() {
     Shader shader("res\\main.vs", "res\\main.fs");
     Camera camera;
 
+    // glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)_width/(float)_height, 0.1f, 100.0f);
+
     glm::mat4 model;
     glm::mat4 view;
-    glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1920.0f/1080.0f, 0.1f, 100.0f);
+    glm::mat4 proj;
     // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
-    shader.setMat4("projection", proj);
 
-    glClearColor(0.36, 0.78, 0.95, 0);
+    glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while(!Window::shouldClose())
     {
         camera.update();
@@ -112,6 +113,7 @@ void Application::run() {
         shader.use();
         shader.setMat4("model", model);
         shader.setMat4("view", view);
+        proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.1f, 100.0f);
         shader.setMat4("projection", proj);
 
         glBindVertexArray(VAO);

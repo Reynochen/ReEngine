@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "Events.hpp"
+#include "Window.hpp"
+#include "Shader.hpp"
 
 const float YAW = -90.0F;
 const float PITCH = 0.0f;
@@ -30,14 +32,16 @@ public:
     float Zoom;
 
     glm::mat4 lookAtMat;
+    Shader* shader;
 
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, +3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) 
+    Camera(Shader& shader, glm::vec3 position = glm::vec3(0.0f, 0.0f, +3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) 
     : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY)
     {
         Position = position;
         WorldUp = up;
         Yaw = yaw;
         Pitch = pitch;
+        this->shader = &shader;
         updateVectors();
     }
 
@@ -48,6 +52,12 @@ public:
     void update() {
         updateMouseMove();
         updateMove();
+
+        glm::mat4 view = glm::lookAt(Position, Position + Front, Up);
+        glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.1f, 100.0f);
+        // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
+        shader->setMat4("view", view);
+        shader->setMat4("projection", proj);
     }
 
 private:

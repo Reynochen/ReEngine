@@ -84,16 +84,10 @@ void Application::run() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    //Create shader
-    Shader shader("res\\main.vs", "res\\main.fs");
-    Camera camera;
-
-    // glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)_width/(float)_height, 0.1f, 100.0f);
+    Shader shader("res\\main.vs", "res\\main.fs"); //Create shader
+    Camera camera(shader); //Create camera
 
     glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 proj;
-    // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
 
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while(!Window::shouldClose())
@@ -108,13 +102,8 @@ void Application::run() {
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        view = camera.getViewMatrix();
-
         shader.use();
         shader.setMat4("model", model);
-        shader.setMat4("view", view);
-        proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.1f, 100.0f);
-        shader.setMat4("projection", proj);
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);

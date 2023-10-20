@@ -24,16 +24,15 @@ class Mesh {
     glm::vec3 scale;
     glm::mat4 ModelMatrix;
 
-    void initVertexData(Vertex* vertexArray, const unsigned& verticiesCount, GLuint* indexArray, const unsigned& indicesCount);
+    void initVertexData(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
     void initVAO();
     void initModelMatrix();
     void updateUniforms(Shader* shader);
 
 public:
-    Mesh(Vertex* vertexArray, const unsigned& verticiesCount, GLuint* indexArray, const unsigned& indicesCount);
+    Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
     ~Mesh();
 
-    void update();
     void render(Shader* shader);
 };
 

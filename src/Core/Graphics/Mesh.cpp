@@ -6,12 +6,11 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include <stb_image.h>
 #include "Shader.hpp"
 
-void Mesh::initVertexData(Vertex* vertexArray, const unsigned& verticiesCount, GLuint* indexArray, const unsigned& indicesCount) 
+void Mesh::initVertexData(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount) 
 {
-    for(size_t i = 0; i < verticiesCount; i++) {
+    for(size_t i = 0; i < verticesCount; i++) {
         this->vertices.push_back(vertexArray[i]);     
     }
 
@@ -20,9 +19,9 @@ void Mesh::initVertexData(Vertex* vertexArray, const unsigned& verticiesCount, G
     }
 }
 
-Mesh::Mesh(Vertex* vertexArray, const unsigned& verticiesCount, GLuint* indexArray, const unsigned& indicesCount) 
+Mesh::Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount) 
 {
-    initVertexData(vertexArray, verticiesCount, indexArray, indicesCount);
+    initVertexData(vertexArray, verticesCount, indexArray, indicesCount);
     initVAO();
     initModelMatrix();
 }

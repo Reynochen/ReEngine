@@ -26,11 +26,12 @@ Application::~Application() {
 void Application::run() {
 
     Vertex vertices[] = {
-        glm::vec3(0.f, 0.5f, 0.f),          glm::vec3(1.f, 0.f, 0.f),   glm::vec3(0.f, 0.f, 0.f),glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(-0.5f, -0.5f, 0.f),       glm::vec3(0.f, 1.f, 0.f),   glm::vec3(0.f, 0.f, 0.f),glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec3(0.f, 0.f, 0.f),glm::vec3(0.f, 0.f, 0.f),
+        glm::vec3(0.f, 0.5f, 0.f),          glm::vec3(1.f, 0.f, 0.f),   glm::vec2(0.f, 0.f),    glm::vec3(0.f, 0.f, 0.f),
+        glm::vec3(-0.5f, -0.5f, 0.f),       glm::vec3(0.f, 1.f, 0.f),   glm::vec2(1.f, 0.f),    glm::vec3(0.f, 0.f, 0.f),
+        glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec2(0.5f, 1.f),    glm::vec3(0.f, 0.f, 0.f),
     };
 
+    Texture testTex("res/0o0.jpg", GL_TEXTURE_2D);
     //MODEL MESH
     Mesh test(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
 
@@ -54,7 +55,11 @@ void Application::run() {
 
         shader.use();
         shader.setMat4("model", model);
+        testTex.bind(0, GL_TEXTURE_2D);
+        shader.setInt("Texture", 0);
+
         test.render(&shader);
+
 
         Window::swapBuffers();
         Events::pullEvents();

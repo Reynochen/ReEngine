@@ -54,7 +54,7 @@ public:
         updateMove();
 
         glm::mat4 view = glm::lookAt(Position, Position + Front, Up);
-        glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.1f, 100.0f);
+        glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.05f, 100.0f);
         // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
         shader->setMat4("view", view);
         shader->setMat4("projection", proj);

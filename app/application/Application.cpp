@@ -6,6 +6,7 @@
 #include "Graphics.hpp"
 #include "Camera.hpp"
 #include "Events.hpp"
+#include "Model.hpp"
 
 #include <math.h>
 #include <iostream>
@@ -31,14 +32,17 @@ void Application::run() {
         glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec2(0.5f, 1.f),    glm::vec3(0.f, 0.f, 0.f),
     };
 
-    Texture testTex("res/0o0.jpg", GL_TEXTURE_2D);
-    //MODEL MESH
-    Mesh test(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
+    Texture testTex("res/0o0.jpg", GL_TEXTURE_2D, 0);
+    Texture amogus("res/amogus.png", GL_TEXTURE_2D, 0);
+    //Meshes
+    Mesh testMesh(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
+    Mesh testMesh2(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
+
+    //Models
+    std::vector<Model*> models;
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
-
-    glm::mat4 model;
 
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while(!Window::shouldClose())
@@ -49,25 +53,23 @@ void Application::run() {
             Window::shouldClose(true);
         }
 
-        model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-
         shader.use();
-        shader.setMat4("model", model);
-        testTex.bind(0, GL_TEXTURE_2D);
-        shader.setInt("Texture", 0);
 
-        test.render(&shader);
+        testMesh.setPosition(glm::vec3(5.f, 0.f, 0.f));
+        testMesh.rotate(glm::vec3((float)glfwGetTime()*100, (float)glfwGetTime()*50, 0.f));
+        testTex.bind();
+        shader.setInt("Texture", testTex.getTexUnit());
+        testMesh.render(&shader);
 
+
+        testMesh2.rotate(glm::vec3(0.f, (float)glfwGetTime()*25, 0.f));
+        amogus.bind();
+        shader.setInt("Texture", amogus.getTexUnit());
+        testMesh2.render(&shader);
 
         Window::swapBuffers();
         Events::pullEvents();
     }
-}
-
-void Application::updateDraw() {
-
 }
 
 Application* CreateApplication() {

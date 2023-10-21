@@ -7,7 +7,12 @@
 
 #include <stb_image.h>
 
-Texture::Texture(const char* texturePath, GLenum type) {
+Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
+    if(ID) glDeleteTextures(1, &ID);
+
+    this->type = type;
+    this->textureUnit = textureUnit;
+
     stbi_set_flip_vertically_on_load(1);
     unsigned char* image = stbi_load(texturePath, &width, &height, &nrChannels, 4);
 
@@ -36,8 +41,8 @@ Texture::~Texture() {
     glDeleteTextures(1, &ID);
 }
 
-void Texture::bind(GLint textureUint, GLenum type) {
-    glActiveTexture(GL_TEXTURE0 + textureUint);
+void Texture::bind() {
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(type, ID);
 }
 

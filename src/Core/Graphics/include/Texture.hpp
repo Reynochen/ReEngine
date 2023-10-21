@@ -4,16 +4,20 @@
 #include <glad/glad.h>
 
 class Texture {
-    GLuint ID;
+    GLuint ID, textureUnit;
+    GLenum type;
+
     int width, height, nrChannels;
 
 public:
-    Texture(const char* texturePath, GLenum type);
+    Texture(const char* texturePath, GLenum type, GLuint textureUnit);
     ~Texture();
 
     inline GLuint getTexID() const { return ID; }
 
-    void bind(GLint textureUint, GLenum type);
+    GLuint getTexUnit() { return textureUnit; }
+
+    void bind();
     void unbind(GLenum type);
 };
 

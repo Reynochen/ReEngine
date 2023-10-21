@@ -21,9 +21,10 @@ class Model {
     glm::vec3 scale;
 
     void initModel();
+    void updateUniforms(Shader* shader);
 
 public:
-    Model(glm::vec3 position, Texture* texDif, Texture* texSpec, std::vector<Mesh*> meshes);
+    Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, std::vector<Mesh*> meshes);
     ~Model();
 
     void render(Shader* shader);

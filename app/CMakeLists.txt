@@ -8,6 +8,7 @@ add_executable(${PROJECT_NAME} main.cpp application/application.cpp)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Graphics
+    Object
     Camera
     Events
     glfw

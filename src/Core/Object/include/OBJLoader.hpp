@@ -66,7 +66,7 @@ static std::vector<Vertex> loadOBJ(const char* path)
         else if(prefix == "f")
         {
             int counter = 0;
-            while(ss >> temp_glint) 
+            while(ss >> temp_glint)
             {
                 //Pushing indices
                 if(counter == 0)
@@ -105,13 +105,11 @@ static std::vector<Vertex> loadOBJ(const char* path)
     //Load in all indices
     for(size_t i = 0; i < vertices.size(); ++i) 
     {
-        vertices[i].position = vertex_positions[vertex_pos_indices[i]-1];
-        vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indices[i]-1];
-        // vertices[i].normal = vertex_normals[vertex_normal_indices[i]-1];
+        if(vertex_positions.size() != 0) vertices[i].position = vertex_positions[vertex_pos_indices[i]-1];
+        if(vertex_texcoord_indices.size() != 0) vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indices[i]-1];
+        if(vertex_normal_indices.size() != 0) vertices[i].normal = vertex_normals[vertex_normal_indices[i]-1];
         vertices[i].color = glm::vec3(1.f, 1.f, 1.f);
-        
-    }
-    
+    }    
 
     std::cout << "Number of vertices: " << vertices.size() << '\n';
     //Loaded success

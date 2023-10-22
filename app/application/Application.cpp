@@ -34,13 +34,10 @@ void Application::run() {
 
     Texture testTex("res/0o0.jpg", GL_TEXTURE_2D, 0);
     Texture amogus("res/amogus.png", GL_TEXTURE_2D, 0);
-    //Meshes
-    Mesh testMesh(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
-    Mesh testMesh2(vertices, sizeof(vertices)/sizeof(Vertex), 0, 0);
 
     //Models
-    std::vector<Model*> models;
-    Model model(glm::vec3(0.f), &amogus, &amogus, "res/models/sphere.obj");
+    Model sphere(glm::vec3(0.f), &testTex, &testTex, "res/models/sphere.obj");
+    Model monkey(glm::vec3(5.f, 0.f, 0.f), &amogus, &amogus, "res/models/monke.obj");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
@@ -56,18 +53,11 @@ void Application::run() {
 
         shader.use();
 
+        sphere.scale = glm::vec3(sin((float)glfwGetTime()));
+        monkey.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
 
-        model.render(&shader);
-        // testTex.bind();
-        // shader.setInt("Texture", testTex.getTexUnit());
-        // testMesh.setPosition(glm::vec3(5.f, 0.f, 0.f));
-        // testMesh.rotate(glm::vec3((float)glfwGetTime()*100, (float)glfwGetTime()*50, 0.f));
-        // testMesh.render(&shader);
-
-        // amogus.bind();
-        // shader.setInt("Texture", amogus.getTexUnit());
-        // testMesh2.rotate(glm::vec3(0.f, (float)glfwGetTime()*25, 0.f));
-        // testMesh2.render(&shader);
+        sphere.render(&shader);
+        monkey.render(&shader);
 
         Window::swapBuffers();
         Events::pullEvents();

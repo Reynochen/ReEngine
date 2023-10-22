@@ -16,14 +16,15 @@ class Model {
     Texture* textureSpecular;
     std::vector<Mesh*> meshes;
     
-    glm::vec3 position;
-    glm::vec3 rotation;
-    glm::vec3 scale;
+    glm::mat4 ModelMatrix;
 
     void initModel();
+    void initModelMatrix();
     void updateUniforms(Shader* shader);
 
 public:
+    glm::vec3 position, rotation, scale;
+    
     Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, const char* modelPath);
     ~Model();
 

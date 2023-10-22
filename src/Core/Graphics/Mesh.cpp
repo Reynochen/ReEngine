@@ -13,14 +13,12 @@ Mesh::Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArra
 {
     initVertexData(vertexArray, verticesCount, indexArray, indicesCount);
     initVAO();
-    initModelMatrix();
 }
-Mesh::Mesh(std::vector<Vertex> vertices) 
+Mesh::Mesh(std::vector<Vertex> &vertices) 
 {
     this->vertices = vertices;
 
     initVAO();
-    initModelMatrix();
 }
 
 Mesh::~Mesh()
@@ -70,48 +68,8 @@ void Mesh::initVAO()
     glBindVertexArray(0);
 }
 
-void Mesh::initModelMatrix() 
+void Mesh::render() 
 {
-    position = glm::vec3(0.f);
-    rotation = glm::vec3(0.f);
-    scale = glm::vec3(1.f);
-
-    ModelMatrix = glm::mat4(1.f);
-    ModelMatrix = glm::translate(ModelMatrix, position);
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-    ModelMatrix = glm::scale(ModelMatrix, scale);
-}
-
-void Mesh::updateUniforms(Shader* shader) 
-{
-    ModelMatrix = glm::scale(ModelMatrix, scale);
-
-    shader->setMat4("model", ModelMatrix);
-    ModelMatrix = glm::mat4(1.f);
-}
-
-//Probably i should make this a little better
-void Mesh::setPosition(glm::vec3 pos) 
-{
-    position = pos;
-    ModelMatrix = glm::translate(ModelMatrix, position);
-}
-void Mesh::rotate(glm::vec3 rotate) 
-{
-    rotation = rotate;
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-}
-
-void Mesh::render(Shader* shader) 
-{
-    //Update uniforms in shader
-    updateUniforms(shader);
-
-    //Render
     glBindVertexArray(VAO);
 
     if(indices.empty())

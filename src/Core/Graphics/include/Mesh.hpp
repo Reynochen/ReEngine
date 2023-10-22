@@ -19,24 +19,16 @@ class Mesh {
 
     GLuint VAO, VBO, EBO;
 
-    glm::vec3 position, rotation, scale;
-    glm::mat4 ModelMatrix;
-
     void initVertexData(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
     void initVAO();
-    void initModelMatrix();
-    void updateUniforms(Shader* shader);
 
 public:
     Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
-    Mesh(std::vector<Vertex> vertices);
+    Mesh(std::vector<Vertex> &vertices);
 
     ~Mesh();
 
-    void setPosition(glm::vec3 pos);
-    void rotate(glm::vec3 rotate);
-
-    void render(Shader* shader);
+    void render();
 };
 
 #endif

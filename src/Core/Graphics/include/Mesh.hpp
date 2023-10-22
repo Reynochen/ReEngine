@@ -29,6 +29,8 @@ class Mesh {
 
 public:
     Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
+    Mesh(std::vector<Vertex> vertices);
+
     ~Mesh();
 
     void setPosition(glm::vec3 pos);

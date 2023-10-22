@@ -7,6 +7,7 @@
 
 #include "Shader.hpp"
 #include "Mesh.hpp"
+#include "OBJLoader.hpp"
 
 #include "Texture.hpp"
 
@@ -14,14 +15,24 @@ void Model::initModel() {
 
 }
 
-Model::Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, std::vector<Mesh*> meshes) {
+Model::Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, const char* modelPath) {
     this->position = position;
     this->textureDiffuse = textureDiffuse;
     this->textureSpecular = textureSpecular;
 
-    for(auto* mesh : meshes) {
-        this->meshes.push_back(new Mesh(*mesh));
+    try
+    {
+        meshes.push_back(new Mesh(loadOBJ(modelPath)));
     }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+
+    // for(auto* mesh : meshes) {
+    //     this->meshes.push_back(new Mesh(*mesh));
+    // }
 
 }
 
@@ -30,14 +41,19 @@ Model::~Model() {
         delete mesh;
 }
 
+void Model::updateUniforms(Shader* shader) {
+
+}
+
 void Model::render(Shader* shader) {
     updateUniforms(shader);
 
     shader->use();
 
-    textureDiffuse->bind();
-    textureSpecular->bind();
+    for (auto& mesh : meshes) {
+        textureDiffuse->bind();
+        textureSpecular->bind();
 
-    for (auto& mesh : meshes)
         mesh->render(shader);
+    }
 }

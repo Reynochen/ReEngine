@@ -49,8 +49,8 @@ int Window::initialization(int width, int height, const char* title, int fpsLock
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Hide inside polygones
-    glEnable(GL_DEPTH_TEST);
-    glFrontFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
 
     Window::_fpsLock = fpsLock;
 

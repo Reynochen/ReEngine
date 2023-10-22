@@ -40,6 +40,7 @@ void Application::run() {
 
     //Models
     std::vector<Model*> models;
+    Model model(glm::vec3(0.f), &amogus, &amogus, "res/models/sphere.obj");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
@@ -55,17 +56,18 @@ void Application::run() {
 
         shader.use();
 
-        testMesh.setPosition(glm::vec3(5.f, 0.f, 0.f));
-        testMesh.rotate(glm::vec3((float)glfwGetTime()*100, (float)glfwGetTime()*50, 0.f));
-        testTex.bind();
-        shader.setInt("Texture", testTex.getTexUnit());
-        testMesh.render(&shader);
 
+        model.render(&shader);
+        // testTex.bind();
+        // shader.setInt("Texture", testTex.getTexUnit());
+        // testMesh.setPosition(glm::vec3(5.f, 0.f, 0.f));
+        // testMesh.rotate(glm::vec3((float)glfwGetTime()*100, (float)glfwGetTime()*50, 0.f));
+        // testMesh.render(&shader);
 
-        testMesh2.rotate(glm::vec3(0.f, (float)glfwGetTime()*25, 0.f));
-        amogus.bind();
-        shader.setInt("Texture", amogus.getTexUnit());
-        testMesh2.render(&shader);
+        // amogus.bind();
+        // shader.setInt("Texture", amogus.getTexUnit());
+        // testMesh2.rotate(glm::vec3(0.f, (float)glfwGetTime()*25, 0.f));
+        // testMesh2.render(&shader);
 
         Window::swapBuffers();
         Events::pullEvents();

@@ -15,6 +15,13 @@ Mesh::Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArra
     initVAO();
     initModelMatrix();
 }
+Mesh::Mesh(std::vector<Vertex> vertices) 
+{
+    this->vertices = vertices;
+
+    initVAO();
+    initModelMatrix();
+}
 
 Mesh::~Mesh()
 {
@@ -27,18 +34,18 @@ void Mesh::initVertexData(Vertex* vertexArray, const unsigned& verticesCount, GL
 {
     for(size_t i = 0; i < verticesCount; i++) {
         this->vertices.push_back(vertexArray[i]);     
-    }
+    }    
 
     for(size_t i = 0; i < indicesCount; i++) {
         this->indices.push_back(indexArray[i]);     
     }
+
 }
 
 void Mesh::initVAO() 
 {
     glGenVertexArrays(1, &this->VAO);
     glBindVertexArray(this->VAO);
-
 
     glGenBuffers(1, &this->VBO);  
     glBindBuffer(GL_ARRAY_BUFFER, this->VBO);

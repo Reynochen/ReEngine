@@ -24,7 +24,7 @@ class Model {
     void updateUniforms(Shader* shader);
 
 public:
-    Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, std::vector<Mesh*> meshes);
+    Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, const char* modelPath);
     ~Model();
 
     void render(Shader* shader);

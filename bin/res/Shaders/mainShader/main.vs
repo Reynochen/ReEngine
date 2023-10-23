@@ -10,12 +10,18 @@ out vec3 vNormal;
 out vec2 vTexcoord;
 out vec3 vColor;
 
+out float fragTime;
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform float time;
+
 void main()
 {
+    fragTime = time;
+
     vPos = vertexPos;
     vNormal = vertexNormal;
     vTexcoord = vec2(vertexTexcoord.x, vertexTexcoord.y * -1.f);

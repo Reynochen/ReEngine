@@ -52,6 +52,7 @@ void Application::run() {
         }
 
         shader.use();
+        shader.setFloat("time", (float)glfwGetTime());
 
         sphere.scale = glm::vec3(sin((float)glfwGetTime()));
         monkey.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);

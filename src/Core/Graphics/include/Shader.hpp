@@ -88,6 +88,9 @@ public:
     void setMat4(const std::string &name, glm::mat4 value) {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
     }
+    void setVec3(const std::string &name, const glm::vec3& value) const {
+        glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+    }
  
 private:
     void checkCompileErrors(unsigned int shader, std::string type)

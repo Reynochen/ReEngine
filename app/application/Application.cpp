@@ -53,8 +53,10 @@ void Application::run() {
 
         shader.use();
         shader.setFloat("time", (float)glfwGetTime());
+        shader.setVec3("viewPos", camera.Position);
 
-        sphere.scale = glm::vec3(sin((float)glfwGetTime()));
+        // sphere.scale = glm::vec3(sin((float)glfwGetTime()));
+        sphere.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
         monkey.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
 
         sphere.render(&shader);

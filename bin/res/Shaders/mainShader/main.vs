@@ -23,9 +23,13 @@ void main()
     fragTime = time;
 
     vPos = vertexPos;
-    vNormal = vertexNormal;
+    vNormal = transpose(inverse(mat3(model))) * vertexNormal;
     vTexcoord = vec2(vertexTexcoord.x, vertexTexcoord.y * -1.f);
     vColor = vertexColor;
+
+    // vPos.x += sin(time+vPos.x*8)/8;
+    // vPos.y += sin(time + vPos.x*8)/8;
+    // vPos.z += sin(time + vPos.y*8)/8;
 
     gl_Position = projection * view * model * vec4(vPos, 1.0);
 }

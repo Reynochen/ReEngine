@@ -25,7 +25,7 @@ class Model {
 public:
     glm::vec3 position, rotation, scale;
     
-    Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, const char* modelPath);
+    Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath);
     ~Model();
 
     void render(Shader* shader);

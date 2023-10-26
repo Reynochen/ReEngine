@@ -31,13 +31,10 @@ void Application::run() {
         glm::vec3(-0.5f, -0.5f, 0.f),       glm::vec3(0.f, 1.f, 0.f),   glm::vec2(1.f, 0.f),    glm::vec3(0.f, 0.f, 0.f),
         glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec2(0.5f, 1.f),    glm::vec3(0.f, 0.f, 0.f),
     };
-
-    Texture testTex("res/brick.png", GL_TEXTURE_2D, 0);
-    Texture amogus("res/amogus.png", GL_TEXTURE_2D, 0);
-
+    
     //Models
-    Model dominus(glm::vec3(0.f), &testTex, &testTex, "res/models/dominus.obj");
-    Model monkey(glm::vec3(5.f, 0.f, 0.f), &amogus, &amogus, "res/models/monke.obj");
+    Model dominus(glm::vec3(0.f), "res/brick.png", "res/brick.png", "res/models/dominus.obj");
+    Model monkey(glm::vec3(5.f, 0.f, 0.f), "res/amogus.png", "res/amogus.png", "res/models/monke.obj");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera

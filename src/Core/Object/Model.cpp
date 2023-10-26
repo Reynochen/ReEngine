@@ -15,16 +15,16 @@ void Model::initModel() {
 
 }
 
-Model::Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecular, const char* modelPath) {
+Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath) {
     //Init Data
-    this->position = glm::vec3(0.f);
-    this->rotation = glm::vec3(0.f);
-    this->scale = glm::vec3(1.f);
+    rotation = glm::vec3(0.f);
+    scale = glm::vec3(1.f);
 
     //Set Data
     this->position = position;
-    this->textureDiffuse = textureDiffuse;
-    this->textureSpecular = textureSpecular;
+
+    textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
+    textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
 
     try
     {
@@ -41,6 +41,9 @@ Model::Model(glm::vec3 position, Texture* textureDiffuse, Texture* textureSpecul
 Model::~Model() {
     for(auto*& mesh : meshes)
         delete mesh;
+    
+    delete textureDiffuse;
+    delete textureSpecular;
 }
 
 void Model::updateUniforms(Shader* shader) {

@@ -68,4 +68,7 @@ void Model::render(Shader* shader) {
 
         mesh->render();
     }
+
+    glActiveTexture(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

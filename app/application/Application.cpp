@@ -32,11 +32,11 @@ void Application::run() {
         glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec2(0.5f, 1.f),    glm::vec3(0.f, 0.f, 0.f),
     };
 
-    Texture testTex("res/0o0.jpg", GL_TEXTURE_2D, 0);
+    Texture testTex("res/brick.png", GL_TEXTURE_2D, 0);
     Texture amogus("res/amogus.png", GL_TEXTURE_2D, 0);
 
     //Models
-    Model sphere(glm::vec3(0.f), &testTex, &testTex, "res/models/sphere.obj");
+    Model dominus(glm::vec3(0.f), &testTex, &testTex, "res/models/dominus.obj");
     Model monkey(glm::vec3(5.f, 0.f, 0.f), &amogus, &amogus, "res/models/monke.obj");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
@@ -55,11 +55,11 @@ void Application::run() {
         shader.setFloat("time", (float)glfwGetTime());
         shader.setVec3("viewPos", camera.Position);
 
-        // sphere.scale = glm::vec3(sin((float)glfwGetTime()));
-        sphere.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
+        // dominus.scale = glm::vec3(sin((float)glfwGetTime()));
+        dominus.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
         monkey.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
 
-        sphere.render(&shader);
+        dominus.render(&shader);
         monkey.render(&shader);
 
         Window::swapBuffers();

@@ -23,9 +23,10 @@ class Model {
     void updateUniforms(Shader* shader);
 
 public:
-    glm::vec3 position, rotation, scale;
+    glm::vec3 position, originPos, rotation, scale;
     
     Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath);
+    Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, std::vector<Vertex> vertices);
     ~Model();
 
     void render(Shader* shader);

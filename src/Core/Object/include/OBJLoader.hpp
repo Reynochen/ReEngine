@@ -33,7 +33,7 @@ static std::vector<Vertex> loadOBJ(const char* path)
     GLint temp_glint = 0;
 
     if(!file.is_open()) {
-        std::cerr << "ERROR::OBJLOADER::Could not open file.";
+        std::cerr << "ERROR::OBJLOADER::Could not open file.\n";
         return vertices;
     }
 
@@ -44,11 +44,8 @@ static std::vector<Vertex> loadOBJ(const char* path)
         ss.clear();
         ss.str(line);
         ss >> prefix;
-
-        if(prefix == "#") {}
-        else if(prefix == "o") {}
-        else if(prefix == "s") {}
-        else if(prefix == "v") //Vertex pos 
+        
+        if(prefix == "v") //Vertex pos 
         {
             ss >> temp_vec3.x >> temp_vec3.y >> temp_vec3.z;
             vertex_positions.push_back(temp_vec3);
@@ -93,17 +90,13 @@ static std::vector<Vertex> loadOBJ(const char* path)
                     counter = 0;
             }
         }
-        else 
-        {
-
-        }
     }
 
     //Build final mesh
     vertices.resize(vertex_position_indices.size(), Vertex());
 
     if(vertex_positions.size() == 0 || vertex_texcoords.size() == 0 || vertex_normals.size() == 0) {
-        std::cerr << "ERROR::OBJLOADER::Incorrect OBJ file mesh.";
+        std::cerr << "ERROR::OBJLOADER::Incorrect OBJ file mesh.\n";
         return vertices;
     } 
 

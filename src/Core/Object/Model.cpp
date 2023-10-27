@@ -19,6 +19,7 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
     //Init Data
     rotation = glm::vec3(0.f);
     scale = glm::vec3(1.f);
+    originPos = glm::vec3(0.f);
 
     //Set Data
     this->position = position;
@@ -38,6 +39,21 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
 
 }
 
+Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, std::vector<Vertex> vertices) {
+    //Init Data
+    rotation = glm::vec3(0.f);
+    scale = glm::vec3(1.f);
+    originPos = glm::vec3(0.f);
+
+    //Set Data
+    this->position = position;
+
+    textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
+    textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
+
+    meshes.push_back(new Mesh(vertices));
+}
+
 Model::~Model() {
     for(auto*& mesh : meshes)
         delete mesh;
@@ -52,6 +68,7 @@ void Model::updateUniforms(Shader* shader) {
     ModelMatrix = glm::rotate(ModelMatrix, rotation.x, glm::vec3(1.f, 0.f, 0.f));
     ModelMatrix = glm::rotate(ModelMatrix, rotation.y, glm::vec3(0.f, 1.f, 0.f));
     ModelMatrix = glm::rotate(ModelMatrix, rotation.z, glm::vec3(0.f, 0.f, 1.f));
+    ModelMatrix = glm::translate(ModelMatrix, originPos);
     ModelMatrix = glm::scale(ModelMatrix, scale);
 
     shader->setMat4("model", ModelMatrix);

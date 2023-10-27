@@ -15,9 +15,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "OBJLoader.hpp"
+
 Application::Application() {
     Window::initialization(640, 480, "ReEngine", 0);
     Events::initialization(Window::getWindow());
+
+    glClearColor(0.35, 0.77, 0.94, 0); //Sky color
+    Window::swapBuffers();
+    Window::swapBuffers();
 }
 
 Application::~Application() {
@@ -25,28 +31,30 @@ Application::~Application() {
 }
 
 void Application::run() {
-
-    Vertex vertices[] = {
-        glm::vec3(0.f, 0.5f, 0.f),          glm::vec3(1.f, 0.f, 0.f),   glm::vec2(0.f, 0.f),    glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(-0.5f, -0.5f, 0.f),       glm::vec3(0.f, 1.f, 0.f),   glm::vec2(1.f, 0.f),    glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(0.5f, -0.5f, 0.f),        glm::vec3(0.f, 0.f, 1.f),   glm::vec2(0.5f, 1.f),    glm::vec3(0.f, 0.f, 0.f),
-    };
-    
+    // std::vector<Vertex> dominusVertices = loadOBJ("res/models/dominus.obj");
     //Models
-    Model dominus(glm::vec3(0.f), "res/brick.png", "res/brick.png", "res/models/dominus.obj");
+    Model dominus(glm::vec3(3.f, 0.f, -1.f), "res/amogus.png", "res/amogus.png", "res/models/dominus.obj");
     Model monkey(glm::vec3(5.f, 0.f, 0.f), "res/amogus.png", "res/amogus.png", "res/models/monke.obj");
+
+    Model* test;
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
 
-    glClearColor(0.35, 0.77, 0.94, 0); //Sky color
-    while(!Window::shouldClose())
+    while (!Window::shouldClose())
     {
         camera.update();
 
         if (Events::pressed(GLFW_KEY_ESCAPE)) {
             Window::shouldClose(true);
         }
+        if (Events::jpressed(GLFW_KEY_0)) {
+            std::cout << "Car added";
+            test = new Model(glm::vec3(0.f, 0.f, 0.f), "res/amogus.png", "res/amogus.png", "res/models/sphere.obj");
+        }
+        
+        if (test != NULL)
+            test->render(&shader);
 
         shader.use();
         shader.setFloat("time", (float)glfwGetTime());

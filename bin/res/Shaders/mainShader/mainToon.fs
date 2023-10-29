@@ -17,8 +17,8 @@ void main()
 {
     // lightColor/lightSource, normal
     vec3 normal = normalize(vNormal);
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
-    vec3 lightSource = lightPos;
+    vec3 lightColor = vec3(0.8, 0.8, 0.8);
+    vec3 lightSource = vec3(1.0, 1.0, 1.0);
 
     //Diffuse
     float intensityDif = dot(lightSource, normal);
@@ -37,7 +37,7 @@ void main()
     vec3 specular = vec3(0.0, 0.0, 0.0);
 
     if (intensityDif > 1.6)
-        specular = intensitySpecular * (lightColor);
+        specular = intensitySpecular * lightColor;
 
     vec3 color = diffuse;
 

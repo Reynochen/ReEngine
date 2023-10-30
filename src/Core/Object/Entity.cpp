@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "Object.hpp"
+#include "Entity.hpp"
 #include "Model.hpp"
 
 
-Object::Object(glm::vec3 position, Model* model, const char* texturePath) {
+Entity::Entity(glm::vec3 position, Model* model, const char* texturePath) {
     //Init Data
     rotation = glm::vec3(0.f);
     scale = glm::vec3(1.f);
@@ -16,13 +16,14 @@ Object::Object(glm::vec3 position, Model* model, const char* texturePath) {
     this->model = model;
 }
 
-Object::~Object() {
+Entity::~Entity() {
     delete model;
     delete collision;
 }
 
-void Object::render(Shader* shader) {
+void Entity::render(Shader* shader) {
     if(model == nullptr) return;
+
     
     model->position = position;
     model->originPos = originPos;

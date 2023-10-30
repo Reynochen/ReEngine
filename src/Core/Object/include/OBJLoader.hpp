@@ -33,7 +33,7 @@ static std::vector<Vertex> loadOBJ(const char* path)
     GLint temp_glint = 0;
 
     if(!file.is_open()) {
-        std::cerr << "ERROR::OBJLOADER::Could not open file.\n";
+        std::cerr << "ERROR::OBJLOADER::Could not open file | " << path << '\n';
         return vertices;
     }
 

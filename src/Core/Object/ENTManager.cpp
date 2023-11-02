@@ -21,40 +21,55 @@ ENTManager::ENTManager()
 void ENTManager::loadModels(std::string pathToModels)
 {    
     namespace fs = std::filesystem;
-    modelCount = 0;
+    modelsCount = 0;
     entityCount = 0;
 
     for(auto& folderPath : fs::recursive_directory_iterator(pathToModels)) { //Check all folder in Models
         if (!folderPath.is_directory()) continue;
             
-        for(auto& filePath : fs::recursive_directory_iterator(folderPath.path())) { //Check file in model folder
+        for(auto& filePath : fs::recursive_directory_iterator(folderPath.path())) { //Check file in models folder
             if (filePath.is_directory()) continue;
 
             std::string filePathStr = filePath.path().string();
             std::string formatFile = filePathStr.erase(0, filePathStr.find_first_of(".")+1).c_str();
 
-            if (formatFile == "obj") {
+            if (formatFile == "obj") { //Load obj files
                 Model** modelsBuf = models;
 
-                modelCount++;
-                models = new Model*[modelCount];
+                modelsCount++;
+                models = new Model*[modelsCount];
 
-                for (int i = 0; i < modelCount-1; i++)
+                for (int i = 0; i < modelsCount-1; i++)
                 {
                     models[i] = modelsBuf[i];
                 }
-                if (modelCount-1) delete[] modelsBuf;
+                if (modelsCount-1) delete[] modelsBuf;
                 
-                models[modelCount-1] = new Model(glm::vec3(0.f), "res/white.jpg", "res/white.jpg", filePath.path().string().c_str());
+                models[modelsCount-1] = new Model(glm::vec3(0.f), "res/white.jpg", "res/white.jpg", filePath.path().string().c_str());
+                break;
             }
         }
     }
 }
 
-void ENTManager::addEntity(glm::vec3 position) 
+void ENTManager::addEntity(glm::vec3 position, const char* modelName) 
 {
     Entity** entityBuf = entities;                
-                
+    int modelID = -1;
+
+    for(int model = 0; model < modelsCount; model++) 
+    {
+        if(models[model]->getModelPath() != modelName) continue;
+        modelID = model;
+        break;
+    }
+
+    if(modelID == -1) 
+    {
+        std::cout << "ERROR::CREATE_ENTITY::NOT_FOUND_MODEL\n"; 
+        return;
+    }
+
     entityCount++;
     entities = new Entity*[entityCount];
 
@@ -64,7 +79,7 @@ void ENTManager::addEntity(glm::vec3 position)
     }
     if (entityCount-1) delete[] entityBuf;
 
-    entities[entityCount-1] = new Entity(position, models[0], "");
+    entities[entityCount-1] = new Entity(position, models[modelID], "");
     std::cout << entityCount << '\n';
 }
 

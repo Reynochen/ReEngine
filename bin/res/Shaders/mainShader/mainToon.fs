@@ -32,14 +32,12 @@ void main()
     // Specular light
     vec3 cameraSource = viewPos;
     vec3 viewSource = normalize(cameraSource);
-    float intensitySpecular = normalize(dot(lightSource, normal));
-    
-    vec3 specular = vec3(0.0, 0.0, 0.0);
+    vec3 reflectSource = normalize(reflect(-lightSource, normal));
+    float specularStrength = max(0.0, dot(viewSource, reflectSource));
+    specularStrength = pow(specularStrength, 32.0);
+    vec3 specular = specularStrength * lightColor;
 
-    if (intensityDif > 1.6)
-        specular = intensitySpecular * lightColor;
-
-    vec3 color = diffuse;
+    vec3 color = diffuse + specular;
 
     FragColor = texture(Texture, vTexcoord) * vec4(color, 1.0);
 }

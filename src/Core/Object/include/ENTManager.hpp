@@ -1,7 +1,6 @@
 #ifndef ENTMANAGER
 #define ENTMANAGER
 
-#include <vector>
 #include <string>
 
 class Entity;
@@ -9,10 +8,10 @@ class Shader;
 
 class ENTManager {
     Entity** entities = nullptr;
-    int entityCount;
-
     Model** models = nullptr;
-    int modelCount;
+
+    int entityCount;
+    int modelsCount;
 
     void loadModels(std::string pathToModels);
 
@@ -24,7 +23,7 @@ public:
 
     void renderEntities(Shader &shader);
 
-    void addEntity(glm::vec3 position);
+    void addEntity(glm::vec3 position, const char* modelPath = "");
     void removeEntity();
 
 };

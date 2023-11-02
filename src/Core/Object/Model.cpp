@@ -24,6 +24,10 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
     //Set Data
     this->position = position;
 
+    std::string modelPathStr = modelPath;
+    std::string shortModelPath = modelPathStr.erase(0, 11).c_str();
+    this->modelPath = shortModelPath;
+
     textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
     textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
 
@@ -37,21 +41,6 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
         std::cerr << e.what() << '\n';
     }
 
-}
-
-Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, std::vector<Vertex> vertices) {
-    //Init Data
-    rotation = glm::vec3(0.f);
-    scale = glm::vec3(1.f);
-    originPos = glm::vec3(0.f);
-
-    //Set Data
-    this->position = position;
-
-    textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
-    textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
-
-    meshes.push_back(new Mesh(vertices));
 }
 
 Model::~Model() {

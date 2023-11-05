@@ -31,8 +31,8 @@ Application::~Application() {
 }
 
 void Application::run() {
-    ENTController ENTMng;
-    ENTMng.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/amogus.png");
+    ENTController ENTCtrl;
+    ENTCtrl.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/amogus.png");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
@@ -47,23 +47,23 @@ void Application::run() {
             Window::shouldClose(true);
         }
         if (Events::jpressed(GLFW_KEY_Z))
-            ENTMng.removeEntity();
+            ENTCtrl.removeEntity();
         if (Events::jpressed(GLFW_KEY_0))
-            ENTMng.addEntity(camera.getPos(), "Dominus\\dominus.obj");
+            ENTCtrl.addEntity(camera.getPos(), "Dominus\\dominus.obj");
 
         shader.use();
         shader.setFloat("time", (float)glfwGetTime());
         shader.setVec3("viewPos", camera.Position);
 
-        entity = ENTMng.getEntity(0);
+        entity = ENTCtrl.getEntity(0);
         if (entity != nullptr)
             entity->rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
         
-        entity = ENTMng.getEntity(1);
+        entity = ENTCtrl.getEntity(1);
         if (entity != nullptr)
             entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5 ,0.f);
 
-        ENTMng.renderEntities(shader);
+        ENTCtrl.renderEntities(shader);
         Window::swapBuffers();
         Events::pullEvents();
     }

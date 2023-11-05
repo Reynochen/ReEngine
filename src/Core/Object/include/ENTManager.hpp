@@ -23,7 +23,7 @@ public:
 
     void renderEntities(Shader &shader);
 
-    void addEntity(glm::vec3 position, const char* modelPath = "");
+    void addEntity(glm::vec3 position, const char* modelPath = nullptr, const char* texPath = nullptr);
     void removeEntity();
 
 };

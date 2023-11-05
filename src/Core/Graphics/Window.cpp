@@ -52,6 +52,7 @@ int Window::initialization(int width, int height, const char* title, int fpsLock
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
 
+    glClearColor(0, 0, 0, 0); //Black screen
     Window::_fpsLock = fpsLock;
 
     return 0;

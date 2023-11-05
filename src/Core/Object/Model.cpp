@@ -30,6 +30,7 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
 
     textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
     textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
+    
 
     try
     {
@@ -63,7 +64,7 @@ void Model::updateUniforms(Shader* shader) {
     shader->setMat4("model", ModelMatrix);
 }
 
-void Model::render(Shader* shader) {
+void Model::render(Shader* shader, Texture* texture) {
     updateUniforms(shader);
 
     shader->use();
@@ -74,6 +75,10 @@ void Model::render(Shader* shader) {
 
         shader->setInt("Texture", textureDiffuse->getTexUnit());
         shader->setInt("Texture", textureSpecular->getTexUnit());
+        if(texture != nullptr) {
+            texture->bind();
+            shader->setInt("Texture", texture->getTexUnit());
+        }
 
         mesh->render();
     }

@@ -23,7 +23,6 @@ Application::Application() {
     Window::initialization(640, 480, "ReEngine", 0);
     Events::initialization(Window::getWindow());
 
-    glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     Window::swapBuffers();
     Window::swapBuffers();
 }
@@ -34,13 +33,13 @@ Application::~Application() {
 
 void Application::run() {
     ENTManager ENTMng;
-
-    Model monkey(glm::vec3(5.f, 0.f, 0.f), "res/amogus.png", "res/amogus.png", "res/models/monke.obj");
+    ENTMng.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/amogus.png");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
     Camera camera(shader); //Create camera
 
     Entity* entity;
+    glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while (!Window::shouldClose())
     {
         camera.update();
@@ -48,21 +47,24 @@ void Application::run() {
         if (Events::pressed(GLFW_KEY_ESCAPE)) {
             Window::shouldClose(true);
         }
+        if (Events::jpressed(GLFW_KEY_Z))
+            ENTMng.removeEntity();
         if (Events::jpressed(GLFW_KEY_0))
             ENTMng.addEntity(camera.getPos(), "Dominus\\dominus.obj");
 
         shader.use();
         shader.setFloat("time", (float)glfwGetTime());
         shader.setVec3("viewPos", camera.Position);
-        ENTMng.renderEntities(shader);
 
         entity = ENTMng.getEntity(0);
         if (entity != nullptr)
-            entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5 ,0.f);
+            entity->rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
         
-        monkey.rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
-        monkey.render(&shader);
+        entity = ENTMng.getEntity(1);
+        if (entity != nullptr)
+            entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5 ,0.f);
 
+        ENTMng.renderEntities(shader);
         Window::swapBuffers();
         Events::pullEvents();
     }

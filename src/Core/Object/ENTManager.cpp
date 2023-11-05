@@ -52,7 +52,7 @@ void ENTManager::loadModels(std::string pathToModels)
     }
 }
 
-void ENTManager::addEntity(glm::vec3 position, const char* modelName) 
+void ENTManager::addEntity(glm::vec3 position, const char* modelName, const char* texPath) 
 {
     Entity** entityBuf = entities;                
     int modelID = -1;
@@ -77,9 +77,9 @@ void ENTManager::addEntity(glm::vec3 position, const char* modelName)
     {
         entities[i] = entityBuf[i];
     }
-    if (entityCount-1) delete[] entityBuf;
 
-    entities[entityCount-1] = new Entity(position, models[modelID], "");
+    delete[] entityBuf;
+    entities[entityCount-1] = new Entity(position, models[modelID], texPath);
     std::cout << entityCount << '\n';
 }
 
@@ -98,8 +98,16 @@ Entity* ENTManager::getEntity(int id)
         return nullptr;
 }
 
+void ENTManager::removeEntity()
+{
+    if(entityCount-1 < 0) return;
+
+    delete entities[entityCount-1];
+    entityCount--;
+}
+
 ENTManager::~ENTManager() 
 {
-    // delete[] entities;
     // delete[] models;
+    // delete[] entities;
 }

@@ -27,11 +27,11 @@ class Model {
 
 public:
     glm::vec3 position, originPos, rotation, scale;
-    
+
     Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath);
     ~Model();
 
-    void render(Shader* shader);
+    void render(Shader* shader, Texture* texture=nullptr);
 
     std::string getModelPath() {return modelPath;}
 };

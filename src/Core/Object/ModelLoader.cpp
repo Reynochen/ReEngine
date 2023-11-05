@@ -1,6 +1,4 @@
-#ifndef OBJ_LOADER
-#define OBJ_LOADER
-
+#include "ModelLoader.hpp"
 #include<iostream>
 #include<fstream>
 #include<sstream>
@@ -10,8 +8,9 @@
 
 #include"Mesh.hpp"
 
-static std::vector<Vertex> loadOBJ(const char* path) 
-{
+ModelLoader::ModelLoader() {}
+
+void ModelLoader::loadOBJModel(const char* filePath) {
     std::vector<glm::fvec3> vertex_positions;
     std::vector<glm::fvec2> vertex_texcoords;
     std::vector<glm::fvec3> vertex_normals;
@@ -23,7 +22,7 @@ static std::vector<Vertex> loadOBJ(const char* path)
     std::vector<Vertex> vertices;
 
     std::stringstream ss;
-    std::ifstream file(path);
+    std::ifstream file(filePath);
 
     std::string line;
     std::string prefix = "";
@@ -33,8 +32,8 @@ static std::vector<Vertex> loadOBJ(const char* path)
     GLint temp_glint = 0;
 
     if(!file.is_open()) {
-        std::cerr << "ERROR::OBJLOADER::Could not open file | " << path << '\n';
-        return vertices;
+        std::cerr << "ERROR::OBJLOADER::COULD_NOT_OPEN_FILE \"" << filePath << "\"\n";
+        return;
     }
 
     //Read one line at a time
@@ -97,7 +96,7 @@ static std::vector<Vertex> loadOBJ(const char* path)
 
     if(vertex_positions.size() == 0 || vertex_texcoords.size() == 0 || vertex_normals.size() == 0) {
         std::cerr << "ERROR::OBJLOADER::Incorrect OBJ file mesh.\n";
-        return vertices;
+        return;
     } 
 
     //Load in all indices
@@ -111,7 +110,5 @@ static std::vector<Vertex> loadOBJ(const char* path)
 
     std::cout << "Number of vertices: " << vertices.size() << '\n';
     //Loaded success
-    return vertices;
+    this->vertices = new std::vector<Vertex>(vertices);
 }
-
-#endif

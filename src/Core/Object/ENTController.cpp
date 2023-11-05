@@ -1,5 +1,5 @@
 #include "Entity.hpp"
-#include "ENTManager.hpp"
+#include "ENTController.hpp"
 
 #include <glm/glm.hpp>
 
@@ -12,13 +12,13 @@
 #include "Model.hpp"
 #include "Entity.hpp"
 
-ENTManager::ENTManager() 
+ENTController::ENTController() 
 {
     loadModels("res/models/");
 
 }
 
-void ENTManager::loadModels(std::string pathToModels)
+void ENTController::loadModels(std::string pathToModels)
 {    
     namespace fs = std::filesystem;
     modelsCount = 0;
@@ -52,7 +52,7 @@ void ENTManager::loadModels(std::string pathToModels)
     }
 }
 
-void ENTManager::addEntity(glm::vec3 position, const char* modelName, const char* texPath) 
+void ENTController::addEntity(glm::vec3 position, const char* modelName, const char* texPath) 
 {
     Entity** entityBuf = entities;                
     int modelID = -1;
@@ -83,14 +83,14 @@ void ENTManager::addEntity(glm::vec3 position, const char* modelName, const char
     std::cout << entityCount << '\n';
 }
 
-void ENTManager::renderEntities(Shader &shader) 
+void ENTController::renderEntities(Shader &shader) 
 {
     for (int i = 0; i < entityCount; i++) {
         entities[i]->render(&shader);
     }
 }
 
-Entity* ENTManager::getEntity(int id) 
+Entity* ENTController::getEntity(int id) 
 {
     if(id < entityCount && id >= 0)
         return entities[id];
@@ -98,7 +98,7 @@ Entity* ENTManager::getEntity(int id)
         return nullptr;
 }
 
-void ENTManager::removeEntity()
+void ENTController::removeEntity()
 {
     if(entityCount-1 < 0) return;
 
@@ -106,7 +106,7 @@ void ENTManager::removeEntity()
     entityCount--;
 }
 
-ENTManager::~ENTManager() 
+ENTController::~ENTController() 
 {
     // delete[] models;
     // delete[] entities;

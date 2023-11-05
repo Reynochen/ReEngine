@@ -14,7 +14,7 @@ Mesh::Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArra
     initVertexData(vertexArray, verticesCount, indexArray, indicesCount);
     initVAO();
 }
-Mesh::Mesh(std::vector<Vertex> &vertices) 
+Mesh::Mesh(std::vector<Vertex>* vertices) 
 {
     this->vertices = vertices;
 
@@ -26,12 +26,13 @@ Mesh::~Mesh()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+    delete vertices;
 }
 
 void Mesh::initVertexData(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount) 
 {
     for(size_t i = 0; i < verticesCount; i++) {
-        this->vertices.push_back(vertexArray[i]);     
+        this->vertices->push_back(vertexArray[i]);     
     }    
 
     for(size_t i = 0; i < indicesCount; i++) {
@@ -47,7 +48,7 @@ void Mesh::initVAO()
 
     glGenBuffers(1, &this->VBO);  
     glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->vertices->size() * sizeof(Vertex), vertices->data(), GL_STATIC_DRAW);
 
     glGenBuffers(1, &this->EBO);  
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
@@ -73,7 +74,7 @@ void Mesh::render()
     glBindVertexArray(VAO);
 
     if(indices.empty())
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        glDrawArrays(GL_TRIANGLES, 0, vertices->size());
     else
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }

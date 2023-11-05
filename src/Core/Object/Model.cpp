@@ -7,7 +7,7 @@
 
 #include "Shader.hpp"
 #include "Mesh.hpp"
-#include "OBJLoader.hpp"
+#include "ModelLoader.hpp"
 
 #include "Texture.hpp"
 
@@ -31,11 +31,11 @@ Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* tex
     textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
     textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
     
-
     try
     {
-        std::vector<Vertex> modelVertices = loadOBJ(modelPath);
-        meshes.push_back(new Mesh(modelVertices));
+        ModelLoader loader;
+        loader.loadOBJModel(modelPath);
+        meshes.push_back(new Mesh(loader.getVertices()));
     }
     catch(const std::exception& e)
     {

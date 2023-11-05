@@ -5,8 +5,9 @@
 
 class Entity;
 class Shader;
+class Model;
 
-class ENTManager {
+class ENTController {
     Entity** entities = nullptr;
     Model** models = nullptr;
 
@@ -16,8 +17,8 @@ class ENTManager {
     void loadModels(std::string pathToModels);
 
 public:
-    ENTManager();
-    ~ENTManager();
+    ENTController();
+    ~ENTController();
 
     Entity* getEntity(int id);
 

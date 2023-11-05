@@ -21,7 +21,6 @@ Entity::Entity(glm::vec3 position, Model* model, const char* texturePath) {
 }
 
 Entity::~Entity() {
-    // delete model;
     // delete collision;
     delete texture;
 }

@@ -15,9 +15,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "OBJLoader.hpp"
 #include "Entity.hpp"
-#include "ENTManager.hpp"
+#include "ENTController.hpp"
 
 Application::Application() {
     Window::initialization(640, 480, "ReEngine", 0);
@@ -32,7 +31,7 @@ Application::~Application() {
 }
 
 void Application::run() {
-    ENTManager ENTMng;
+    ENTController ENTMng;
     ENTMng.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/amogus.png");
 
     Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader

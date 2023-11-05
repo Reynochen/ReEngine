@@ -13,8 +13,9 @@ struct Vertex {
     glm::vec3 normal;
 };
 
+
 class Mesh {
-    std::vector<Vertex> vertices;
+    std::vector<Vertex>* vertices;
     std::vector<GLuint> indices;
 
     GLuint VAO, VBO, EBO;
@@ -24,7 +25,7 @@ class Mesh {
 
 public:
     Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
-    Mesh(std::vector<Vertex> &vertices);
+    Mesh(std::vector<Vertex>* vertices);
 
     ~Mesh();
 

@@ -18,6 +18,8 @@
 #include "Entity.hpp"
 #include "ENTController.hpp"
 
+#include "GUI.hpp"
+
 Application::Application() {
     Window::initialization(640, 480, "ReEngine", 0);
     Events::initialization(Window::getWindow());
@@ -31,18 +33,18 @@ Application::~Application() {
 }
 
 void Application::run() {
+    GUI test;
     ENTController ENTCtrl;
-    ENTCtrl.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/amogus.png");
+    ENTCtrl.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/Texture/amogus.png");
 
-    Shader shader("res/shaders/mainShader/main.vs", "res/shaders/mainShader/main.fs"); //Create shader
+    Shader shader("res/shaders/main/main.vs", "res/shaders/main/main.fs"); //Create shader
+    Shader GUIshader("res/shaders/GUI/main.vs", "res/shaders/GUI/main.fs");
     Camera camera(shader); //Create camera
-
+    
     Entity* entity;
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while (!Window::shouldClose())
     {
-        camera.update();
-
         if (Events::pressed(GLFW_KEY_ESCAPE)) {
             Window::shouldClose(true);
         }
@@ -56,6 +58,7 @@ void Application::run() {
         }
 
         shader.use();
+        camera.update();
         shader.setFloat("time", (float)glfwGetTime());
         shader.setVec3("viewPos", camera.Position);
 
@@ -68,6 +71,8 @@ void Application::run() {
             entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5 ,0.f);
 
         ENTCtrl.renderEntities(shader);
+        
+        test.render(&GUIshader);
         Window::swapBuffers();
         Events::pullEvents();
     }

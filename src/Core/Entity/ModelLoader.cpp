@@ -105,7 +105,7 @@ void ModelLoader::loadOBJModel(const char* filePath) {
         vertices[i].position = vertex_positions[vertex_position_indices[i]-1];
         vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indices[i]-1];
         vertices[i].normal = vertex_normals[vertex_normal_indices[i]-1];
-        vertices[i].color = glm::vec3(1.f, 1.f, 1.f);
+        vertices[i].color = glm::vec4(1.f);
     }    
 
     std::cout << "Number of vertices: " << vertices.size() << '\n';

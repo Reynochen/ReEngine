@@ -47,7 +47,7 @@ void ENTController::loadModels(std::string pathToModels)
             }
             if (modelsCount-1) delete[] modelsBuf;
             
-            models[modelsCount-1] = new Model(glm::vec3(0.f), "res/white.jpg", "res/white.jpg", filePath.path().string().c_str());
+            models[modelsCount-1] = new Model(glm::vec3(0.f), "res/Texture/white.jpg", "res/Texture/white.jpg", filePath.path().string().c_str());
             break;            
         }
     }

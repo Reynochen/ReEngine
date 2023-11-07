@@ -4,6 +4,7 @@ out vec4 FragColor;
 in vec3 vPos;
 in vec2 vTexcoord;
 in vec3 vNormal;
+in vec4 vColor;
 
 in float fragTime;
 
@@ -11,19 +12,23 @@ uniform sampler2D Texture;
 uniform vec3 viewPos;
 
 uniform vec3 lightDir; //For future
+uniform vec3 lightPos;
 
 void main()
 {
-    vec3 ambient = vec3(0.5, 0.5, 0.5); //Grey
-
     // lightColor/lightSource, normal
     vec3 normal = normalize(vNormal);
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    vec3 lightColor = vec3(0.8, 0.8, 0.8);
     vec3 lightSource = vec3(1.0, 1.0, 1.0);
 
-    // Diffuse light
-    float diffuseStrength = max(0.0, dot(normalize(lightSource), normal));
-    vec3 diffuse = diffuseStrength * lightColor;
+    //Diffuse
+    float intensityDif = dot(lightSource, normal);
+
+    vec3 diffuse = vec3(0.2, 0.2, 0.2);
+    if (intensityDif > 0.95)
+        diffuse = vec3(0.9, 0.9, 0.9);
+    else if (intensityDif > 0.4)
+        diffuse = vec3(0.4, 0.4, 0.4);
 
     // Specular light
     vec3 cameraSource = viewPos;
@@ -33,14 +38,7 @@ void main()
     specularStrength = pow(specularStrength, 32.0);
     vec3 specular = specularStrength * lightColor;
 
-    // Lighting
-    vec3 lighting = vec3(0.0, 0.0, 0.0);
-    lighting = ambient * 0.4 + diffuse * 1.0 + specular * 0.6;
-
-    vec3 modelColor = vec3(0.75, 0.75, 0.75);
-    vec3 color = modelColor * lighting;
-
-    float intensity = dot(lightSource, normal);
+    vec3 color = diffuse + specular;
 
     FragColor = texture(Texture, vTexcoord) * vec4(color, 1.0);
 }

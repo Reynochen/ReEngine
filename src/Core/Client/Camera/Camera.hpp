@@ -23,6 +23,7 @@ class Camera
 {
 public:
     glm::vec3 Position, Front, Up, Right, WorldUp;
+    glm::mat4 view, proj;
     bool EnableMove = true;
 
     float Yaw;

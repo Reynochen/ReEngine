@@ -13,6 +13,7 @@ target_link_libraries(${PROJECT_NAME}
     Events
     glfw
     glad
+    GUI
     glm
 )
 

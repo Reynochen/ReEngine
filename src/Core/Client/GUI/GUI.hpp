@@ -5,16 +5,25 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include <string>
 
 class Mesh;
+class Shader;
+class Texture;
 
 class GUI {
     std::vector<Mesh*> meshes;
+    Texture* texture = nullptr;
+    glm::vec4 color;
+
+    glm::mat4 ModelMatrix = glm::mat4(1.f);
+
+    bool Enable = true;
 
 public:
     GUI();
     ~GUI();    
+
+    void render(Shader* shader);
 
 };
 

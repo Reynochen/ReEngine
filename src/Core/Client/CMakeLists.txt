@@ -1,3 +1,5 @@
+project(Client)
+
 file(GLOB subdirs CONFIGURE_DEPENDS *)
 
 foreach(subdir ${subdirs})

@@ -50,6 +50,10 @@ void Application::run() {
             ENTCtrl.removeEntity();
         if (Events::jpressed(GLFW_KEY_0))
             ENTCtrl.addEntity(camera.getPos(), "Dominus\\dominus.obj");
+        if (Events::jpressed(GLFW_KEY_SLASH)) {
+            camera.EnableMove = !camera.EnableMove;
+            Events::hideMouse(camera.EnableMove); 
+        }
 
         shader.use();
         shader.setFloat("time", (float)glfwGetTime());

@@ -1,6 +1,6 @@
-file(GLOB cpp_file CONFIGURE_DEPENDS *.cpp)
+project(GUI)
 
-project(Object)
+file(GLOB cpp_file CONFIGURE_DEPENDS *.cpp)
 
 add_library(${PROJECT_NAME}
     ${cpp_file}
@@ -8,10 +8,9 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    "include"
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# add_subdirectory(${CMAKE_SOURCE_DIR}/external/glfw)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Graphics

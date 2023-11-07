@@ -6,6 +6,8 @@
 #include "Window.hpp"
 #include <math.h>
 
+GLFWwindow* Events::window = nullptr;
+
 bool Events::keys[1037];
 
 bool Events::firstMouse = true;
@@ -13,6 +15,13 @@ bool Events::firstMouse = true;
 float Events::deltaX,Events::deltaY;
 float Events::lastX = 0.0f, Events::lastY = 0.0f;
 float Events::lastFrame = 0.0f, Events::deltaTime = 0.0f;
+
+void Events::hideMouse(bool state) { /* Cursor switch function */
+    if(window == nullptr) return;
+
+    if(state) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
 
 void Events::pullEvents() {
     deltaX = 0.0f;
@@ -29,8 +38,11 @@ void Events::initialization(GLFWwindow* window) {
     glfwSetMouseButtonCallback(window, mouseButtonCallBack);
     glfwSetCursorPosCallback(window, cursorPosCallBack);
 
-    /* Cursor disable command */
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    Events::window = window;
+    Events::hideMouse(true);
+    // /* Cursor disable command */
+    // if(hideMouse)
+    //     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Events::cursorPosCallBack(GLFWwindow* window, double xpos, double ypos) {

@@ -1,8 +1,12 @@
 #include "Camera.hpp"
 
 void Camera::update() {
-    updateMouseMove();
-    updateMove();
+    if(EnableMove) {
+        updateMouseMove();
+        updateMove();
+    }
+    
+    updateVectors();
 
     glm::mat4 view = glm::lookAt(Position, Position + Front, Up);
     glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.04f, 1000.0f);
@@ -22,8 +26,6 @@ void Camera::updateMouseMove(GLboolean constrainPitch) {
         if (Pitch > 89.0f) Pitch = 89.0f;
         if (Pitch < -89.0f) Pitch = -89.0f;
     }
-
-    updateVectors();
 }
 
 void Camera::updateMove() {

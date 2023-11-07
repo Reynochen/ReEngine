@@ -33,21 +33,22 @@ void ENTController::loadModels(std::string pathToModels)
             std::string filePathStr = filePath.path().string();
             std::string formatFile = filePathStr.erase(0, filePathStr.find_first_of(".")+1).c_str();
 
-            if (formatFile == "obj") { //Load obj files
-                Model** modelsBuf = models;
+            //Load obj files
+            if (formatFile != "obj") continue;
 
-                modelsCount++;
-                models = new Model*[modelsCount];
+            Model** modelsBuf = models;
 
-                for (int i = 0; i < modelsCount-1; i++)
-                {
-                    models[i] = modelsBuf[i];
-                }
-                if (modelsCount-1) delete[] modelsBuf;
-                
-                models[modelsCount-1] = new Model(glm::vec3(0.f), "res/white.jpg", "res/white.jpg", filePath.path().string().c_str());
-                break;
+            modelsCount++;
+            models = new Model*[modelsCount];
+
+            for (int i = 0; i < modelsCount-1; i++)
+            {
+                models[i] = modelsBuf[i];
             }
+            if (modelsCount-1) delete[] modelsBuf;
+            
+            models[modelsCount-1] = new Model(glm::vec3(0.f), "res/white.jpg", "res/white.jpg", filePath.path().string().c_str());
+            break;            
         }
     }
 }

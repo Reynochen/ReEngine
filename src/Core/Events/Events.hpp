@@ -4,6 +4,8 @@
 class GLFWwindow;
 
 class Events {
+    static GLFWwindow* window;
+
     static bool keys[1037];
     static float deltaTime;
     static float lastFrame;
@@ -27,6 +29,8 @@ public:
 
     static float getDeltaX(), getDeltaY();
     static float getDeltaTime();
+
+    static void hideMouse(bool state);
     
     static void update();
 };

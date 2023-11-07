@@ -23,6 +23,7 @@ class Camera
 {
 public:
     glm::vec3 Position, Front, Up, Right, WorldUp;
+    bool EnableMove = true;
 
     float Yaw;
     float Pitch;

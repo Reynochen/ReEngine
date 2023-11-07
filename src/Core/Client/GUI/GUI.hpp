@@ -15,7 +15,8 @@ class GUI {
     Texture* texture = nullptr;
     glm::vec4 color;
 
-    glm::mat4 ModelMatrix = glm::mat4(1.f);
+    glm::mat4 ModelMatrix;
+    int SIZE=250;
 
     bool Enable = true;
 

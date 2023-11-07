@@ -57,6 +57,20 @@ void Application::run() {
             Events::hideMouse(camera.EnableMove); 
         }
 
+        if (Events::jpressed(GLFW_KEY_UP)) {
+            test.yPos += 2; 
+            std::cout << "x:" << test.xPos << "\ty:" << test.yPos << '\n';
+        }
+        if (Events::jpressed(GLFW_KEY_DOWN)) {
+            test.yPos -= 2;
+        }
+        if (Events::jpressed(GLFW_KEY_LEFT)) {
+            test.xPos -= 0.1;
+        }
+        if (Events::jpressed(GLFW_KEY_RIGHT)) {
+            test.xPos += 0.1;
+        }
+
         shader.use();
         camera.update();
         shader.setFloat("time", (float)glfwGetTime());

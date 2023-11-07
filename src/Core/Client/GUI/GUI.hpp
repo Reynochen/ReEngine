@@ -21,6 +21,8 @@ class GUI {
     bool Enable = true;
 
 public:
+    float yPos = 0;
+    float xPos = 0;
     GUI();
     ~GUI();    
 

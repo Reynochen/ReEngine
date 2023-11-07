@@ -32,19 +32,17 @@ void GUI::render(Shader* shader)
     glDisable(GL_DEPTH_TEST);
     shader->use();
     ModelMatrix = glm::mat4(1.f);
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0, -0.5, 0));
+    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0, -1, 0)); //Pin center-bottom
     
     float width = Window::getWidth();
     float height = Window::getHeight();
 
-    // ModelMatrix = glm::translate(ModelMatrix, glm::vec3(1, -75.5/(height*0.1), 0));
+    
 
-    if(width > SIZE) {
-        ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.f / (width/SIZE), 1, 1));
-    }
-    if(height > SIZE) {
-        ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1, 1.f / (height/SIZE), 1));
-    }
+    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(xPos, yPos/(height*0.1), 0));
+
+    //Scaling by resize window
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.f / (width/SIZE), 1.f / (height/SIZE), 1));
 
     shader->setMat4("model", ModelMatrix);
     

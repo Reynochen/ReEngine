@@ -33,7 +33,9 @@ Application::~Application() {
 }
 
 void Application::run() {
-    GUI test;
+    GUI GUItest(3.5, false, false, false, glm::vec4(glm::vec3(0.25f), 0.6f));
+    GUItest.setY(-0.94);
+    GUItest.width = 60;
     ENTController ENTCtrl;
     ENTCtrl.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/Texture/amogus.png");
 
@@ -55,26 +57,8 @@ void Application::run() {
         if (Events::jpressed(GLFW_KEY_SLASH)) {
             camera.EnableMove = !camera.EnableMove;
             Events::hideMouse(camera.EnableMove); 
+            GUItest.Enable = !GUItest.Enable;
         }
-
-        if (Events::jpressed(GLFW_KEY_UP)) {
-            test.yPos += 2; 
-            std::cout << "x:" << test.xPos << "\ty:" << test.yPos << '\n';
-        }
-        if (Events::jpressed(GLFW_KEY_DOWN)) {
-            test.yPos -= 2;
-        }
-        if (Events::jpressed(GLFW_KEY_LEFT)) {
-            test.xPos -= 0.1;
-        }
-        if (Events::jpressed(GLFW_KEY_RIGHT)) {
-            test.xPos += 0.1;
-        }
-
-        shader.use();
-        camera.update();
-        shader.setFloat("time", (float)glfwGetTime());
-        shader.setVec3("viewPos", camera.Position);
 
         entity = ENTCtrl.getEntity(0);
         if (entity != nullptr)
@@ -84,9 +68,8 @@ void Application::run() {
         if (entity != nullptr)
             entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5 ,0.f);
 
-        ENTCtrl.renderEntities(shader);
-        
-        test.render(&GUIshader);
+        ENTCtrl.renderEntities(shader, camera);
+        GUItest.render(&GUIshader);
         Window::swapBuffers();
         Events::pullEvents();
     }

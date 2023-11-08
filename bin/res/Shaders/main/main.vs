@@ -11,6 +11,7 @@ out vec2 vTexcoord;
 out vec4 vColor;
 
 out float fragTime;
+out float isGUI;
 
 uniform mat4 model;
 uniform mat4 view;

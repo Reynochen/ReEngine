@@ -2,10 +2,12 @@
 #define ENTMANAGER
 
 #include <string>
+#include <glm/glm.hpp>
 
 class Entity;
 class Shader;
 class Model;
+class Camera;
 
 class ENTController {
     Entity** entities = nullptr;
@@ -22,7 +24,7 @@ public:
 
     Entity* getEntity(int id);
 
-    void renderEntities(Shader &shader);
+    void renderEntities(Shader &shader, Camera &camera);
 
     void addEntity(glm::vec3 position, const char* modelPath = nullptr, const char* texPath = nullptr);
     void removeEntity();

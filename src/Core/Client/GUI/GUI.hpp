@@ -5,8 +5,8 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include "Mesh.hpp"
 
-class Mesh;
 class Shader;
 class Texture;
 
@@ -16,15 +16,41 @@ class GUI {
     glm::vec4 color;
 
     glm::mat4 ModelMatrix;
-    int SIZE=250;
+    float SIZE;
 
-    bool Enable = true;
+    bool fillX, fillY;
+
+    float yPos = 0.0, xPos = 0.0;
 
 public:
-    float yPos = 0;
-    float xPos = 0;
-    GUI();
+    float width = 0, height = 0;
+    bool flexibility = true;
+    bool Enable;
+
+    GUI(float size = 1, bool Enable = true, bool fillX = false, bool fillY = false, glm::vec4 color = glm::vec4(1.f)) 
+    {
+        this->Enable = Enable;
+        this->SIZE = size * 0.01;
+        this->fillX = fillX;
+        this->fillY = fillY;
+
+        std::vector<Vertex>* cubeVert = new std::vector<Vertex>{
+                    //Pos                             //Color              //TexCoord          //Normal
+            Vertex {glm::vec3(-1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
+            Vertex {glm::vec3( 1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
+            Vertex {glm::vec3(-1.0f,  1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
+
+            Vertex {glm::vec3( 1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
+            Vertex {glm::vec3( 1.0f, 1.0f, 0.0f),     glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
+            Vertex {glm::vec3( -1.0f, 1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},      
+        };
+        meshes.push_back(new Mesh(cubeVert));
+    }
     ~GUI();    
+
+    void setX(float x) { xPos = x; }
+    void setY(float y) { yPos = y; }
+    void setPos(float x, float y);
 
     void render(Shader* shader);
 

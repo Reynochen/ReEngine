@@ -22,9 +22,9 @@ void main()
     vPos = vertexPos;
     vColor = vertexColor;
 
-    // vPos.x += sin(time+vPos.x*8)/8;
+    // vPos.x += sin(time+vPos.x*80);
     // vPos.y += sin(time + vPos.x*8)/8;
     // vPos.z += sin(time + vPos.y*8)/8;
 
-    gl_Position = model * vec4(vertexPos, 1.0);
+    gl_Position = model * vec4(vPos, 1.0);
 }

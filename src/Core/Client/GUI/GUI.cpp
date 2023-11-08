@@ -1,22 +1,15 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
 #include "GUI.hpp"
-#include "Mesh.hpp"
-#include "Texture.hpp"
+#include "Graphics.hpp"
 
-#include "Window.hpp"
-
-GUI::GUI() 
-{
-    std::vector<Vertex>* cubeVert = new std::vector<Vertex>{
-                //Pos                            //Color             //TexCoord          //Normal
-        Vertex {glm::vec3(-1.0f, -1.0f, 0.0f),    glm::vec4(1.0f),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-        Vertex {glm::vec3( 1.0f, -1.0f, 0.0f),    glm::vec4(1.0f),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-        Vertex {glm::vec3( 0.0f,  1.0f, 0.0f),    glm::vec4(1.0f),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-    };
-
-    meshes.push_back(new Mesh(cubeVert));
+void GUI::setPos(float x, float y) {
+    xPos = x;
+    yPos = y;
 }
 
 GUI::~GUI() 
@@ -29,21 +22,26 @@ GUI::~GUI()
 
 void GUI::render(Shader* shader)
 {
+    if(!Enable) return;
     glDisable(GL_DEPTH_TEST);
+
+    float widthWin = Window::getWidth();
+    float heightWin = Window::getHeight(); 
+
     shader->use();
+    shader->setFloat("time", (float)glfwGetTime());
     ModelMatrix = glm::mat4(1.f);
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0, -1, 0)); //Pin center-bottom
+    // ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0, -1, 0));
     
-    float width = Window::getWidth();
-    float height = Window::getHeight();
-
-    
-
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(xPos, yPos/(height*0.1), 0));
-
+    //Scaling widget in Y axis
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(heightWin * SIZE));
+    //Pin widget
+    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(xPos/SIZE/heightWin, yPos/SIZE/heightWin, 0));
     //Scaling by resize window
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.f / (width/SIZE), 1.f / (height/SIZE), 1));
-
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3((fillX) ? widthWin : (flexibility) ? 1.f / widthWin + width/(widthWin+heightWin) : 1.f / widthWin,
+                                                    (fillY) ? heightWin : (flexibility) ? 1.f / heightWin + height/(widthWin+heightWin) : 1.f / heightWin, 
+                                                    1.f));
+    
     shader->setMat4("model", ModelMatrix);
     
     for (auto& mesh : meshes) {

@@ -19,7 +19,7 @@ void main()
 
     // lightColor/lightSource, normal
     vec3 normal = normalize(vNormal);
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    vec3 lightColor = vec3(0.9, 0.9, 0.9);
     vec3 lightSource = vec3(1.0, 1.0, 1.0);
 
     // Diffuse light
@@ -42,5 +42,5 @@ void main()
 
     float intensity = dot(lightSource, normal);
 
-    FragColor = texture(Texture, vTexcoord) * vec4(color, vColor.w);
+    FragColor = texture(Texture, vTexcoord) * vec4(color, vColor.w);   
 }

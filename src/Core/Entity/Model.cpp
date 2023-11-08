@@ -67,8 +67,6 @@ void Model::updateUniforms(Shader* shader) {
 void Model::render(Shader* shader, Texture* texture) {
     updateUniforms(shader);
 
-    shader->use();
-
     for (auto& mesh : meshes) {
         textureDiffuse->bind();
         textureSpecular->bind();

@@ -13,5 +13,5 @@ uniform vec3 viewPos;
 void main()
 {
     FragColor = texture(Texture, vTexcoord) * vec4(vColor);
-    // FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    // color.rgb = 1. - color.rgb;
 }

@@ -1,6 +1,9 @@
 #include "Entity.hpp"
 #include "ENTController.hpp"
 
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
 #include <glm/glm.hpp>
 
 #include <string>
@@ -11,6 +14,8 @@
 
 #include "Model.hpp"
 #include "Entity.hpp"
+#include "Shader.hpp"
+#include "Camera.hpp"
 
 ENTController::ENTController() 
 {
@@ -84,8 +89,13 @@ void ENTController::addEntity(glm::vec3 position, const char* modelName, const c
     std::cout << entityCount << '\n';
 }
 
-void ENTController::renderEntities(Shader &shader) 
+void ENTController::renderEntities(Shader &shader, Camera &camera) 
 {
+    shader.use();
+    camera.update();
+    shader.setFloat("time", (float)glfwGetTime());
+    shader.setVec3("viewPos", camera.Position);
+
     for (int i = 0; i < entityCount; i++) {
         entities[i]->render(&shader);
     }

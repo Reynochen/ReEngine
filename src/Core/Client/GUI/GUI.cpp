@@ -33,13 +33,13 @@ void GUI::render(Shader* shader)
     ModelMatrix = glm::mat4(1.f);
     // ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0, -1, 0));
     
-    //Scaling widget in Y axis
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(heightWin * SIZE));
+    //Scaling widget
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3((flexible) ? widthWin*SIZE : heightWin*SIZE, heightWin*SIZE, 1));
     //Pin widget
     ModelMatrix = glm::translate(ModelMatrix, glm::vec3(xPos/SIZE/heightWin, yPos/SIZE/heightWin, 0));
     //Scaling by resize window
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3((fillX) ? widthWin : (flexibility) ? 1.f / widthWin + width/(widthWin+heightWin) : 1.f / widthWin,
-                                                    (fillY) ? heightWin : (flexibility) ? 1.f / heightWin + height/(widthWin+heightWin) : 1.f / heightWin, 
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3((fillX) ? widthWin : 1.f / widthWin + width/widthWin,
+                                                    (fillY) ? heightWin : 1.f / heightWin + height/heightWin, 
                                                     1.f));
     
     shader->setMat4("model", ModelMatrix);

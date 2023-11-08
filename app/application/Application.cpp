@@ -20,7 +20,8 @@
 
 #include "GUI.hpp"
 
-Application::Application() {
+Application::Application() 
+{
     Window::initialization(640, 480, "ReEngine", 0);
     Events::initialization(Window::getWindow());
 
@@ -28,18 +29,24 @@ Application::Application() {
     Window::swapBuffers();
 }
 
-Application::~Application() {
+Application::~Application() 
+{
     Window::terminate();
 }
 
-void Application::run() {
+void Application::run() 
+{
+    //GUI widget test
     GUI GUItest(3.5, false, false, false, glm::vec4(glm::vec3(0.25f), 0.6f));
     GUItest.setY(-0.94);
-    GUItest.width = 60;
+    GUItest.width = 27;
+
+    //Entities controller
     ENTController ENTCtrl;
     ENTCtrl.addEntity(glm::vec3(5.f, 0.f, 0.f), "Monke\\monke.obj", "res/Texture/amogus.png");
 
-    Shader shader("res/shaders/main/main.vs", "res/shaders/main/main.fs"); //Create shader
+    //Shaders
+    Shader shader("res/shaders/main/main.vs", "res/shaders/main/main.fs");
     Shader GUIshader("res/shaders/GUI/main.vs", "res/shaders/GUI/main.fs");
     Camera camera(shader); //Create camera
     
@@ -75,7 +82,8 @@ void Application::run() {
     }
 }
 
-Application* CreateApplication() {
+Application* CreateApplication() 
+{
     Application* app = new Application;
     return app;
 }

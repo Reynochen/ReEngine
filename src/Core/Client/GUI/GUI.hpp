@@ -24,7 +24,7 @@ class GUI {
 
 public:
     float width = 0, height = 0;
-    bool flexibility = true;
+    bool flexible = true;
     bool Enable;
 
     GUI(float size = 1, bool Enable = true, bool fillX = false, bool fillY = false, glm::vec4 color = glm::vec4(1.f)) 

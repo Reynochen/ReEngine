@@ -8,14 +8,17 @@ class Texture {
     GLenum type;
 
     int width, height, nrChannels;
+    bool empty = true;
 
 public:
     Texture(const char* texturePath, GLenum type, GLuint textureUnit);
     ~Texture();
 
-    inline GLuint getTexID() const { return ID; }
+    GLuint getTexID() const { return ID; }
 
     GLuint getTexUnit() { return textureUnit; }
+
+    bool isEmpty() { return empty; }
 
     void bind();
     void unbind(GLenum type);

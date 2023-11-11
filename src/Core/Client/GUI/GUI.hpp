@@ -12,7 +12,7 @@ class Texture;
 
 class GUI {
     std::vector<Mesh*> meshes;
-    Texture* texture = nullptr;
+    Texture* texture;
     glm::vec4 color;
 
     glm::mat4 ModelMatrix;
@@ -22,35 +22,20 @@ class GUI {
 
     float yPos = 0.0, xPos = 0.0;
 
+    void createCube();
+
 public:
-    float width = 0, height = 0;
+    float width = 1, height = 1;
     bool flexible = true;
     bool Enable;
 
-    GUI(float size = 1, bool Enable = true, bool fillX = false, bool fillY = false, glm::vec4 color = glm::vec4(1.f)) 
-    {
-        this->Enable = Enable;
-        this->SIZE = size * 0.01;
-        this->fillX = fillX;
-        this->fillY = fillY;
-
-        std::vector<Vertex>* cubeVert = new std::vector<Vertex>{
-                    //Pos                             //Color              //TexCoord          //Normal
-            Vertex {glm::vec3(-1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-            Vertex {glm::vec3( 1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-            Vertex {glm::vec3(-1.0f,  1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-
-            Vertex {glm::vec3( 1.0f, -1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-            Vertex {glm::vec3( 1.0f, 1.0f, 0.0f),     glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},
-            Vertex {glm::vec3( -1.0f, 1.0f, 0.0f),    glm::vec4(color),    glm::vec2(1.0f),    glm::vec3(0.0f)},      
-        };
-        meshes.push_back(new Mesh(cubeVert));
-    }
+    GUI(float size, glm::vec4 color = glm::vec4(1.f), bool Enable = true, const char* texPath = "", bool fillX = false, bool fillY = false);
     ~GUI();    
 
     void setX(float x) { xPos = x; }
     void setY(float y) { yPos = y; }
     void setPos(float x, float y);
+
 
     void render(Shader* shader);
 

@@ -8,10 +8,12 @@ in vec4 vColor;
 
 in float fragTime;
 
-uniform sampler2D Texture;
 uniform vec3 viewPos;
 
 uniform vec3 lightDir; //For future
+
+uniform sampler2D Texture;
+uniform bool texEmpty;
 
 void main()
 {
@@ -42,5 +44,5 @@ void main()
 
     float intensity = dot(lightSource, normal);
 
-    FragColor = texture(Texture, vTexcoord) * vec4(color, vColor.w);   
+    FragColor = texEmpty ? vec4(color, vColor.w) : texture(Texture, vTexcoord) * vec4(color, vColor.w);   
 }

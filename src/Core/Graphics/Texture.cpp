@@ -14,10 +14,14 @@ Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
     this->textureUnit = textureUnit;
 
     stbi_set_flip_vertically_on_load(1);
-    unsigned char* image = stbi_load(texturePath, &width, &height, &nrChannels, 4);    
+    unsigned char* image = stbi_load(texturePath, &width, &height, &nrChannels, 4);
 
     if(!image) {
-        std::cout << "ERROR::TEXTURE::TEXTURE_LOADING_FAILED \"" << texturePath << "\"\n";
+        const char* empty = "";
+        if(texturePath[0] != empty[0])
+            std::cout << "ERROR::TEXTURE::TEXTURE_LOADING_FAILED \"" << texturePath << "\"\n";
+        
+        stbi_image_free(image);
         return;
     }
 
@@ -35,6 +39,7 @@ Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
     glActiveTexture(0);
     glBindTexture(type, 0);
     stbi_image_free(image);
+    this->empty = false;
 }
 
 Texture::~Texture() {

@@ -14,9 +14,8 @@ Entity::Entity(glm::vec3 position, Model* model, const char* texturePath) {
     //Set Data
     this->position = position;
     this->model = model;
-    
-    if(texturePath != nullptr)
-        this->texture = new Texture(texturePath, GL_TEXTURE_2D, 2);
+
+    this->texture = new Texture(texturePath, GL_TEXTURE_2D, 2);
     
 }
 

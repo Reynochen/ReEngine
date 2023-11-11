@@ -73,7 +73,9 @@ void Model::render(Shader* shader, Texture* texture) {
 
         shader->setInt("Texture", textureDiffuse->getTexUnit());
         shader->setInt("Texture", textureSpecular->getTexUnit());
-        if(texture != nullptr) {
+
+        shader->setBool("texEmpty", texture->isEmpty());
+        if(!texture->isEmpty()) {
             texture->bind();
             shader->setInt("Texture", texture->getTexUnit());
         }

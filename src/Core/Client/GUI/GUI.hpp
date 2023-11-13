@@ -7,6 +7,12 @@
 #include <glm/glm.hpp>
 #include "Mesh.hpp"
 
+#include "Window.hpp"
+
+enum Anchor {
+    UP, DOWN, LEFT, RIGHT, CENTER
+};
+
 class Shader;
 class Texture;
 
@@ -16,24 +22,27 @@ class GUI {
     glm::vec4 color;
 
     glm::mat4 ModelMatrix;
-    float SIZE;
-
-    bool fillX, fillY;
+    float scale;
+    Anchor pin;
 
     float yPos = 0.0, xPos = 0.0;
 
-    void createCube();
+    void createFlexibleCube(float width, float height);
+    
+    float rightPadding = 12.0f;
+    float leftPadding = 12.0f;
+    float topPadding = 450.0f;
+    float bottomPadding = 8.0f;
 
 public:
-    float width = 1, height = 1;
-    bool flexible = true;
+    bool flexible = false;
     bool Enable;
 
-    GUI(float size, glm::vec4 color = glm::vec4(1.f), bool Enable = true, const char* texPath = "", bool fillX = false, bool fillY = false);
+    GUI(Anchor pin = CENTER, glm::vec4 color = glm::vec4(1.f), bool Enable = true, const char* texPath = "", bool fillX = false, bool fillY = false);
     ~GUI();    
 
-    void setX(float x) { xPos = x; }
-    void setY(float y) { yPos = y; }
+    void setX(float x) { xPos += x; }
+    void setY(float y) { yPos += y; }
     void setPos(float x, float y);
 
 

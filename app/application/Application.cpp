@@ -37,12 +37,10 @@ Application::~Application()
 void Application::run() 
 {
     //GUI widget test
-    GUI GUItest(0.15, glm::vec4(glm::vec3(0.0f), 0.5f), false);
-    GUI GUItest2(0.15, glm::vec4(glm::vec3(1.f, 0.f, 1.f), 1.f), false);
-    GUItest2.flexible = false;
-    GUItest.setX(1);
-    // GUItest.width = 53;
-    // GUItest.height = 25;
+    GUI GUItest(DOWN, glm::vec4(glm::vec3(0.0f), 0.5f), false);
+    GUI GUItest2(CENTER, glm::vec4(glm::vec3(1.f, 0.f, 1.f), 1.f), false);
+    GUItest.setY(65);
+    GUItest.flexible = true;
 
     //Entities controller
     ENTController ENTCtrl;
@@ -52,7 +50,7 @@ void Application::run()
     Shader shader("res/shaders/main/main.vs", "res/shaders/main/main.fs");
     Shader GUIshader("res/shaders/GUI/main.vs", "res/shaders/GUI/main.fs");
     Camera camera(shader); //Create camera
-    float xGUI = 0;
+
     Entity* entity;
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     while (!Window::shouldClose())
@@ -74,12 +72,16 @@ void Application::run()
             GUItest.flexible = !GUItest.flexible;
         
         if(Events::pressed(GLFW_KEY_LEFT)) {
-            xGUI -= 8 * Events::getDeltaTime();
-            GUItest2.setX(xGUI);
+            GUItest.setX(-140 * Events::getDeltaTime());
         }
         if(Events::pressed(GLFW_KEY_RIGHT)) {
-            xGUI += 8 * Events::getDeltaTime();
-            GUItest2.setX(xGUI);
+            GUItest.setX(140 * Events::getDeltaTime());
+        }
+        if(Events::pressed(GLFW_KEY_UP)) {
+            GUItest.setY(230 * Events::getDeltaTime());
+        }
+        if(Events::pressed(GLFW_KEY_DOWN)) {
+            GUItest.setY(-230 * Events::getDeltaTime());
         }
 
 

@@ -13,7 +13,6 @@ uniform bool texEmpty;
 
 void main()
 {
-    // bool isEmpty = texEmpty;
     FragColor = texEmpty ? vec4(vColor) : texture(Texture, vTexcoord) * vColor;
 
 }

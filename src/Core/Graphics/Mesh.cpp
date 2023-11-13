@@ -74,7 +74,7 @@ void Mesh::render()
     glBindVertexArray(VAO);
 
     if(indices.empty())
-        glDrawArrays(GL_TRIANGLES, 0, vertices->size());
+        glDrawArrays(mode, 0, vertices->size());
     else
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(mode, indices.size(), GL_UNSIGNED_INT, 0);
 }

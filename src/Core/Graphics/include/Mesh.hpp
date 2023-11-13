@@ -24,6 +24,8 @@ class Mesh {
     void initVAO();
 
 public:
+    GLenum mode = GL_TRIANGLES;
+    
     Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount);
     Mesh(std::vector<Vertex>* vertices);
 

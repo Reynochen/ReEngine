@@ -9,7 +9,7 @@ void Camera::update() {
     updateVectors();
 
     view = glm::lookAt(Position, Position + Front, Up);
-    proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.04f, 1000.0f);
+    proj = glm::perspective(glm::radians(90.0f), (float)Window::getWidth()/(float)Window::getHeight(), 0.04f, 1000.0f) ;// / glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
     // glm::mat4 proj = glm::ortho(-2.0f, +2.0f, -1.5f, +1.5f, 0.1f, 100.0f);
     shader->setMat4("view", view);
     shader->setMat4("projection", proj);

@@ -37,10 +37,13 @@ Application::~Application()
 void Application::run() 
 {
     //GUI widget test
-    GUI GUItest(DOWN, glm::vec4(glm::vec3(0.0f), 0.5f), false);
-    GUI GUItest2(CENTER, glm::vec4(glm::vec3(1.f, 0.f, 1.f), 1.f), false);
-    GUItest.setY(65);
+    GUI GUItest(BOTTOM, glm::vec4(glm::vec3(0.0f), 0.5f), false, 0.25, 0.25);
+    GUItest.setY(150);
     GUItest.flexible = true;
+
+    GUI GUItest2(LEFTBOT, glm::vec4(glm::vec3(1.f, 0.f, 1.f), 1.f), false, 0.15, 0.20);
+    GUItest2.setY(150);
+    GUItest2.setX(200);
 
     //Entities controller
     ENTController ENTCtrl;
@@ -72,17 +75,20 @@ void Application::run()
             GUItest.flexible = !GUItest.flexible;
         
         if(Events::pressed(GLFW_KEY_LEFT)) {
-            GUItest.setX(-140 * Events::getDeltaTime());
+            GUItest2.setX(-140 * Events::getDeltaTime());
         }
         if(Events::pressed(GLFW_KEY_RIGHT)) {
-            GUItest.setX(140 * Events::getDeltaTime());
+            GUItest2.setX(140 * Events::getDeltaTime());
         }
         if(Events::pressed(GLFW_KEY_UP)) {
-            GUItest.setY(230 * Events::getDeltaTime());
+            GUItest2.setY(230 * Events::getDeltaTime());
         }
         if(Events::pressed(GLFW_KEY_DOWN)) {
-            GUItest.setY(-230 * Events::getDeltaTime());
+            GUItest2.setY(-230 * Events::getDeltaTime());
         }
+
+        if(Events::jpressed(GLFW_KEY_1))
+            GUItest.scalableX = !GUItest.scalableX;
 
 
         entity = ENTCtrl.getEntity(0);

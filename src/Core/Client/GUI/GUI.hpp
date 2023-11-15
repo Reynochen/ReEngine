@@ -10,7 +10,7 @@
 #include "Window.hpp"
 
 enum Anchor {
-    UP, DOWN, LEFT, RIGHT, CENTER
+    TOP, BOTTOM, LEFT, RIGHT, LEFTBOT, CENTER
 };
 
 class Shader;
@@ -18,6 +18,7 @@ class Texture;
 
 class GUI {
     std::vector<Mesh*> meshes;
+    glm::vec3* sqVertices = nullptr;
     Texture* texture;
     glm::vec4 color;
 
@@ -27,18 +28,24 @@ class GUI {
 
     float yPos = 0.0, xPos = 0.0;
 
-    void createFlexibleCube(float width, float height);
+    void createStaticCube(float widthWin, float heightWin);
+    void createFlexibleCube(float widthWin, float heightWin);
+    void updateMesh();
     
     float rightPadding = 12.0f;
     float leftPadding = 12.0f;
-    float topPadding = 450.0f;
-    float bottomPadding = 8.0f;
+    float topPadding = 20.0f;
+    float bottomPadding = 12.0f;
 
 public:
+    float sqOriginWidth = 1.f, sqOriginHeight = 1.f;
+
+    bool scalableX = true;
+    bool scalableY = false;
     bool flexible = false;
     bool Enable;
 
-    GUI(Anchor pin = CENTER, glm::vec4 color = glm::vec4(1.f), bool Enable = true, const char* texPath = "", bool fillX = false, bool fillY = false);
+    GUI(Anchor pin = CENTER, glm::vec4 color = glm::vec4(1.f), bool Enable = true, float sqWidth = 1.f, float sqHeight = 1.f, const char* texPath = "", bool fillX = false, bool fillY = false);
     ~GUI();    
 
     void setX(float x) { xPos += x; }

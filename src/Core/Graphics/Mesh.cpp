@@ -8,7 +8,6 @@
 
 #include "Shader.hpp"
 
-
 Mesh::Mesh(Vertex* vertexArray, const unsigned& verticesCount, GLuint* indexArray, const unsigned& indicesCount) 
 {
     initVertexData(vertexArray, verticesCount, indexArray, indicesCount);

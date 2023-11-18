@@ -15,18 +15,17 @@ void Model::initModel() {
 
 }
 
-Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath) {
+Model::Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath, const char* modelName) {
     //Init Data
     rotation = glm::vec3(0.f);
     scale = glm::vec3(1.f);
     originPos = glm::vec3(0.f);
 
     //Set Data
-    this->position = position;
+    this->position = position;    
+    this->modelName = modelName;
 
-    std::string modelPathStr = modelPath;
-    std::string shortModelPath = modelPathStr.erase(0, 11).c_str();
-    this->modelPath = shortModelPath;
+    std::cout << "\n\n" << modelName << "\n";
 
     textureDiffuse = new Texture(textureDiffusePath, GL_TEXTURE_2D, 0);
     textureSpecular = new Texture(textureSpecularPath, GL_TEXTURE_2D, 1);
@@ -67,18 +66,21 @@ void Model::updateUniforms(Shader* shader) {
 void Model::render(Shader* shader, Texture* texture) {
     updateUniforms(shader);
 
+
+    textureDiffuse->bind();
+    textureSpecular->bind();
+
+    shader->setInt("Texture", textureDiffuse->getTexUnit());
+    shader->setInt("Texture", textureSpecular->getTexUnit());
+
+    shader->setBool("texEmpty", texture->isEmpty());
+
+    if(!texture->isEmpty()) {
+        texture->bind();
+        shader->setInt("Texture", texture->getTexUnit());
+    }
+
     for (auto& mesh : meshes) {
-        textureDiffuse->bind();
-        textureSpecular->bind();
-
-        shader->setInt("Texture", textureDiffuse->getTexUnit());
-        shader->setInt("Texture", textureSpecular->getTexUnit());
-
-        shader->setBool("texEmpty", texture->isEmpty());
-        if(!texture->isEmpty()) {
-            texture->bind();
-            shader->setInt("Texture", texture->getTexUnit());
-        }
 
         mesh->render();
     }

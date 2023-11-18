@@ -48,7 +48,6 @@ void GUI::render(Shader* shader)
 
     shader->use();
     shader->setFloat("time", (float)glfwGetTime());
-    shader->setBool("texEmpty", texture->isEmpty());
     
     if(flexible) createFlexibleCube(widthWin, heightWin);
     else createStaticCube(widthWin, heightWin);
@@ -84,14 +83,14 @@ void GUI::render(Shader* shader)
     }
     
     shader->setMat4("model", ModelMatrix);
+    shader->setBool("texEmpty", texture->isEmpty());
+    if(!texture->isEmpty()) {
+        texture->bind();
+        shader->setInt("Texture", texture->getTexUnit());
+    }
 
     updateMesh();
-    for (auto& mesh : meshes) {
-        if(!texture->isEmpty()) {
-            texture->bind();
-            shader->setInt("Texture", texture->getTexUnit());
-        }
-        
+    for (auto& mesh : meshes) {        
         mesh->render();
     }
     glEnable(GL_DEPTH_TEST);
@@ -207,10 +206,10 @@ void GUI::updateMesh()
     }
     meshes.push_back(new Mesh(new std::vector<Vertex>{
                 //Pos               //Color              //TexCoord         //Normal
-        Vertex {sqVertices[0],    glm::vec4(color),    glm::vec2(1.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[1],    glm::vec4(color),    glm::vec2(1.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[2],    glm::vec4(color),    glm::vec2(1.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[3],    glm::vec4(color),    glm::vec2(1.f),    glm::vec3(0.f)},    
+        Vertex {sqVertices[0],    glm::vec4(color),    glm::vec2(0.f, 0.f),    glm::vec3(0.f)},
+        Vertex {sqVertices[1],    glm::vec4(color),    glm::vec2(1.f, 0.f),    glm::vec3(0.f)},
+        Vertex {sqVertices[2],    glm::vec4(color),    glm::vec2(1.f, 1.f),    glm::vec3(0.f)},
+        Vertex {sqVertices[3],    glm::vec4(color),    glm::vec2(0.f, 1.f),    glm::vec3(0.f)},  
     }));
     meshes[0]->mode = GL_TRIANGLE_FAN;
     delete sqVertices;

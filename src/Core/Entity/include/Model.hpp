@@ -16,7 +16,7 @@ class Model {
     Texture* textureDiffuse;
     Texture* textureSpecular;
     std::vector<Mesh*> meshes;
-    std::string modelPath;
+    std::string modelName;
     
     glm::mat4 ModelMatrix;
 
@@ -28,12 +28,12 @@ class Model {
 public:
     glm::vec3 position, originPos, rotation, scale;
 
-    Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath);
+    Model(glm::vec3 position, const char* textureDiffusePath, const char* textureSpecularPath, const char* modelPath, const char* modelName);
     ~Model();
 
     void render(Shader* shader, Texture* texture=nullptr);
 
-    std::string getModelPath() {return modelPath;}
+    std::string getModelName() {return modelName;}
 };
 
 #endif

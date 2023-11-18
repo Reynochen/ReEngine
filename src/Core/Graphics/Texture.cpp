@@ -7,7 +7,7 @@
 
 #include <stb_image.h>
 
-Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
+Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) : textureUnit(textureUnit), type(type) {
     if(ID) glDeleteTextures(1, &ID);
 
     this->type = type;
@@ -25,6 +25,11 @@ Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
         return;
     }
 
+    createTexture(image);
+    stbi_image_free(image);
+}
+
+void Texture::createTexture(unsigned char* image) {
     glGenTextures(1, &ID);
     glBindTexture(type, ID);
 
@@ -38,7 +43,7 @@ Texture::Texture(const char* texturePath, GLenum type, GLuint textureUnit) {
 
     glActiveTexture(0);
     glBindTexture(type, 0);
-    stbi_image_free(image);
+
     this->empty = false;
 }
 

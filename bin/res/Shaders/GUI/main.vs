@@ -21,6 +21,7 @@ void main()
 
     vPos = vertexPos;
     vColor = vertexColor;
+    vTexcoord = vertexTexcoord;
 
     // vPos.x += sin(time+vPos.x*80);
     // vPos.y += sin(time + vPos.x*8)/8;

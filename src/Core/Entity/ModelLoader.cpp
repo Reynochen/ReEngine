@@ -58,7 +58,6 @@ void ModelLoader::loadOBJModel(const char* filePath) {
         {
             ss >> temp_vec3.x >> temp_vec3.y >> temp_vec3.z;
             vertex_normals.push_back(temp_vec3);
-            // std::cout << temp_vec3.x <<'/'<< temp_vec3.y <<'/'<< temp_vec3.z << "\t\t"<<vertex_normals.size()<<'\n';
         }
         else if(prefix == "f")
         {
@@ -85,8 +84,11 @@ void ModelLoader::loadOBJModel(const char* filePath) {
                     ss.ignore(1, ' ');
                 }
                 //Reset counter
-                if(counter > 2)
+                if(counter > 2) {
                     counter = 0;
+                }
+
+                // std::cout << temp_glint << '/';
             }
         }
     }

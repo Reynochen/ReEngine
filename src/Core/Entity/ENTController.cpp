@@ -19,42 +19,45 @@
 
 ENTController::ENTController() 
 {
-    loadModels("res/models/");
+    modelsCount = 0;
+    entityCount = 0;
 
+    loadModels("res/models/");
 }
 
 void ENTController::loadModels(std::string pathToModels)
 {    
     namespace fs = std::filesystem;
-    modelsCount = 0;
-    entityCount = 0;
 
-    for(auto& folderPath : fs::recursive_directory_iterator(pathToModels)) { //Check all folder in Models
-        if (!folderPath.is_directory()) continue;
-            
-        for(auto& filePath : fs::recursive_directory_iterator(folderPath.path())) { //Check file in models folder
-            if (filePath.is_directory()) continue;
+    fs::recursive_directory_iterator iterator(pathToModels);
+    
+    for(decltype(iterator) end; iterator != end; ++iterator) { //Check all folder in Models
+        if(iterator.depth()>0) iterator.disable_recursion_pending();
 
-            std::string filePathStr = filePath.path().string();
-            std::string formatFile = filePathStr.erase(0, filePathStr.find_first_of(".")+1).c_str();
+        if (iterator->is_directory()) continue;
+        std::string filePathStr = iterator->path().string();
+        std::string formatFile = filePathStr.erase(0, filePathStr.find_first_of(".")+1).c_str();
 
-            //Load obj files
-            if (formatFile != "obj") continue;
+        //Load obj files
+        if (formatFile != "obj") continue;
 
-            Model** modelsBuf = models;
+        std::string modelPathStr = iterator->path().string();
+        std::string modelName = modelPathStr.erase(0, 11);
+        if(modelName.find_first_of("\\") == std::string::npos) continue;
+        modelName = modelName.erase(modelName.find_first_of("\\"), modelName.length()).c_str();
 
-            modelsCount++;
-            models = new Model*[modelsCount];
+        Model** modelsBuf = models;
 
-            for (int i = 0; i < modelsCount-1; i++)
-            {
-                models[i] = modelsBuf[i];
-            }
-            if (modelsCount-1) delete[] modelsBuf;
-            
-            models[modelsCount-1] = new Model(glm::vec3(0.f), "", "", filePath.path().string().c_str());
-            break;            
+        modelsCount++;
+        models = new Model*[modelsCount];
+
+        for (int i = 0; i < modelsCount-1; i++)
+        {
+            models[i] = modelsBuf[i];
         }
+        if (modelsCount-1) delete[] modelsBuf;
+
+        models[modelsCount-1] = new Model(glm::vec3(0.f), "", "", iterator->path().string().c_str(), modelName.c_str());      
     }
 }
 
@@ -63,16 +66,21 @@ void ENTController::addEntity(glm::vec3 position, const char* modelName, const c
     Entity** entityBuf = entities;                
     int modelID = -1;
 
-    for(int model = 0; model < modelsCount; model++) 
+    for(int i = 0; i < modelsCount; i++) 
     {
-        if(models[model]->getModelPath() != modelName) continue;
-        modelID = model;
+        if(models[i]->getModelName() != modelName) continue;
+        modelID = i;
         break;
+    }
+
+    std::string emptyName = "";
+    if(modelName == emptyName && modelsCount > 0) {
+        modelID = 0;
     }
 
     if(modelID == -1) 
     {
-        std::cout << "ERROR::CREATE_ENTITY::NOT_FOUND_MODEL\n"; 
+        std::cerr << "ERROR::CREATE_ENTITY::Dont found model: " << modelName << '\n'; 
         return;
     }
 

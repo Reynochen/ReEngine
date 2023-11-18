@@ -10,8 +10,11 @@ class Texture {
     int width, height, nrChannels;
     bool empty = true;
 
+    void createTexture(unsigned char* image);
+
 public:
     Texture(const char* texturePath, GLenum type, GLuint textureUnit);
+    Texture(unsigned char* image, GLenum type, GLuint textureUnit, int width, int height) : textureUnit(textureUnit), type(type), width(width), height(height) { createTexture(image); }
     ~Texture();
 
     GLuint getTexID() const { return ID; }

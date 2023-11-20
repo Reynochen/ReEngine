@@ -75,7 +75,7 @@ void Application::run()
         if (Events::jpressed(GLFW_KEY_Z))
             ENTCtrl.removeEntity();
         if (Events::jpressed(GLFW_KEY_0))
-            ENTCtrl.addEntity(camera.getPos(), "Dominus", "res/Texture/sigma.jpg");
+            ENTCtrl.addEntity(camera.getPos(), "Monkey");
         if (Events::jpressed(GLFW_KEY_SLASH)) {
             camera.EnableMove = false;
             Events::hideMouse(camera.EnableMove); 

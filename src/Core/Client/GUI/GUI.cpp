@@ -205,11 +205,11 @@ void GUI::updateMesh()
         meshes.clear();
     }
     meshes.push_back(new Mesh(new std::vector<Vertex>{
-                //Pos               //Color              //TexCoord         //Normal
-        Vertex {sqVertices[0],    glm::vec4(color),    glm::vec2(0.f, 0.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[1],    glm::vec4(color),    glm::vec2(1.f, 0.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[2],    glm::vec4(color),    glm::vec2(1.f, 1.f),    glm::vec3(0.f)},
-        Vertex {sqVertices[3],    glm::vec4(color),    glm::vec2(0.f, 1.f),    glm::vec3(0.f)},  
+                //Pos             //TexCoord            //Normal            //Color 
+        Vertex {sqVertices[0],    glm::vec2(0.f, 0.f),  glm::vec3(0.f),     glm::vec4(color)},
+        Vertex {sqVertices[1],    glm::vec2(1.f, 0.f),  glm::vec3(0.f),     glm::vec4(color)},
+        Vertex {sqVertices[2],    glm::vec2(1.f, 1.f),  glm::vec3(0.f),     glm::vec4(color)},
+        Vertex {sqVertices[3],    glm::vec2(0.f, 1.f),  glm::vec3(0.f),     glm::vec4(color)},  
     }));
     meshes[0]->mode = GL_TRIANGLE_FAN;
     delete sqVertices;

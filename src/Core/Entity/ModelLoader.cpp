@@ -1,116 +1,83 @@
-#include "ModelLoader.hpp"
+#include"ModelLoader.hpp"
 #include<iostream>
 #include<fstream>
 #include<sstream>
 #include<vector>
+#include<string>
 
 #include<glm/glm.hpp>
 
 #include"Mesh.hpp"
 
+std::vector<std::string> split(std::string& line, char delim) {
+    std::vector<std::string> elems;
+
+    std::stringstream ss(line);
+    std::string word;
+    while (std::getline(ss, word, delim)) {
+        elems.push_back(word);
+    }
+
+    return elems;
+}
+
 ModelLoader::ModelLoader() {}
 
-void ModelLoader::loadOBJModel(const char* filePath) {
-    std::vector<glm::fvec3> vertex_positions;
-    std::vector<glm::fvec2> vertex_texcoords;
-    std::vector<glm::fvec3> vertex_normals;
-
-    std::vector<GLuint> vertex_position_indices;
-    std::vector<GLuint> vertex_texcoord_indices;
-    std::vector<GLuint> vertex_normal_indices;
-
-    std::vector<Vertex> vertices;
-
-    std::stringstream ss;
-    std::ifstream file(filePath);
+void ModelLoader::loadOBJModel(const char* filePath) 
+{
+    std::vector<glm::vec3> v;
+    std::vector<glm::vec2> vt;
+    std::vector<glm::vec3> vn;
 
     std::string line;
-    std::string prefix = "";
+    std::vector<std::string> words;
+    std::vector<Vertex> vert;
 
-    glm::vec3 temp_vec3;
-    glm::vec2 temp_vec2;
-    GLint temp_glint = 0;
+    std::ifstream file;
 
-    if(!file.is_open()) {
-        std::cerr << "ERROR::OBJLOADER::COULD_NOT_OPEN_FILE \"" << filePath << "\"\n";
-        return;
+    file.open(filePath);
+    while (std::getline(file, line)) { //Get line
+        words = split(line, ' ');
+
+        if (!words[0].compare("v")) {
+            v.push_back(glm::vec3(std::stof(words[1]), std::stof(words[2]), std::stof(words[3])));
+        }
+        else if (!words[0].compare("vt")) {
+            vt.push_back(glm::vec2(std::stof(words[1]), std::stof(words[2])));
+        }
+        else if (!words[0].compare("vn")) {
+            vn.push_back(glm::vec3(std::stof(words[1]), std::stof(words[2]), std::stof(words[3])));
+        }
+        else if (!words[0].compare("f")) {
+            readFace(words, v, vt, vn, vert);
+        }
+
     }
+    file.close();
 
-    //Read one line at a time
-    while(std::getline(file, line)) 
-    {
-        //Get the prefix of the line
-        ss.clear();
-        ss.str(line);
-        ss >> prefix;
-        
-        if(prefix == "v") //Vertex pos 
-        {
-            ss >> temp_vec3.x >> temp_vec3.y >> temp_vec3.z;
-            vertex_positions.push_back(temp_vec3);
-        }
-        else if(prefix == "vt") //TexCoords
-        {
-            ss >> temp_vec2.x >> temp_vec2.y;
-            vertex_texcoords.push_back(temp_vec2);
-        }
-        else if(prefix == "vn") //Normal
-        {
-            ss >> temp_vec3.x >> temp_vec3.y >> temp_vec3.z;
-            vertex_normals.push_back(temp_vec3);
-        }
-        else if(prefix == "f")
-        {
-            int counter = 0;
-            while(ss >> temp_glint)
-            {
-                //Pushing indices
-                if(counter == 0)
-                    vertex_position_indices.push_back(temp_glint);
-                else if(counter == 1)
-                    vertex_texcoord_indices.push_back(temp_glint);
-                else if(counter == 2)
-                    vertex_normal_indices.push_back(temp_glint);
-            
-                //Handling characters
-                if(ss.peek() == '/')
-                {
-                    ++counter;
-                    ss.ignore(1, '/');
-                }
-                else if(ss.peek() == ' ')
-                {
-                    ++counter;
-                    ss.ignore(1, ' ');
-                }
-                //Reset counter
-                if(counter > 2) {
-                    counter = 0;
-                }
-
-                // std::cout << temp_glint << '/';
-            }
-        }
-    }
-
-    //Build final mesh
-    vertices.resize(vertex_position_indices.size(), Vertex());
-
-    if(vertex_positions.size() == 0 || vertex_texcoords.size() == 0 || vertex_normals.size() == 0) {
-        std::cerr << "ERROR::OBJLOADER::Incorrect OBJ file mesh.\n";
-        return;
-    } 
-
-    //Load in all indices
-    for(size_t i = 0; i < vertices.size(); ++i) 
-    {
-        vertices[i].position = vertex_positions[vertex_position_indices[i]-1];
-        vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indices[i]-1];
-        vertices[i].normal = vertex_normals[vertex_normal_indices[i]-1];
-        vertices[i].color = glm::vec4(1.f);
-    }    
-
-    std::cout << "Number of vertices: " << vertices.size() << '\n';
     //Loaded success
-    this->vertices = new std::vector<Vertex>(vertices);
+    this->vertices = new std::vector<Vertex>(vert);
+}
+
+void ModelLoader::readFace(std::vector<std::string>&words, std::vector<glm::vec3>&v, std::vector<glm::vec2>&vt, std::vector<glm::vec3>&vn, std::vector<Vertex>& vert) {
+    size_t triangleCount = words.size() - 3;
+
+    for (size_t i = 0; i < triangleCount; ++i) {
+        readCorner(words[1], v, vt, vn, vert);
+        readCorner(words[2 + i], v, vt, vn, vert);
+        readCorner(words[3 + i], v, vt, vn, vert);        
+    }
+}
+
+void ModelLoader::readCorner(std::string& word, std::vector<glm::vec3>&v, std::vector<glm::vec2>&vt, std::vector<glm::vec3>&vn, std::vector<Vertex>& vert) {
+    std::vector<std::string> face = split(word, '/');
+
+    //Pos
+    glm::vec3 pos = v[std::stol(face[0]) - 1];
+    //tex coords
+    glm::vec2 tex = vt[std::stol(face[1]) - 1];
+    //Normal
+    glm::vec3 normal = vn[std::stol(face[2]) - 1];
+
+    vert.push_back(Vertex {pos, tex, normal, glm::vec4(1.f)});
 }

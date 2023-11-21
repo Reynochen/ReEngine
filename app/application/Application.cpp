@@ -45,7 +45,7 @@ void Application::run()
     GUIchat.setY(150);
     GUIchat.flexible = true;
 
-    GUI GUItext(LEFTBOT, glm::vec4(glm::vec3(1.f, 0.f, 1.f), 1.f), false, 0.15, 0.20, "res/Texture/amogus.png");
+    GUI GUItext(LEFTBOT, glm::vec4(glm::vec3(1.f, 1.f, 1.f), 1.f), false, 0.15, 0.20, "res/Texture/amogus.png");
     GUItext.setY(150);
     GUItext.setX(200);
 
@@ -113,7 +113,7 @@ void Application::run()
         ENTCtrl.renderEntities(shader, camera);
 
         GUIchat.render(&GUIshader);
-        GUItext.render(&GUIshader);
+        GUItext.render(&GUIshader, &fontTest);
         Window::swapBuffers();
         Events::pullEvents();
     }

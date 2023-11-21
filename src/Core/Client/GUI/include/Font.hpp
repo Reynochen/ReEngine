@@ -3,17 +3,23 @@
 
 #include <glm/glm.hpp>
 #include <map>
+#include <string>
 
 class Texture;
+class Shader;
 
 struct Character {
-    unsigned int TextureID;
+    Texture* texture;
     glm::vec2 Size;
     glm::vec2 Bearing;
-    unsigned int Advance;
+    long int Advance;
 };
 
 class Font {
+    std::map<char, Character> Characters;
+    int fontSize_;
+
+
 public:
     Font(const char* fontPath, int fontSize);
 
@@ -21,14 +27,8 @@ public:
 
     }
 
-    void bind() const {
-        
-    }
+    void renderCharacter(Shader* shader, int character);
 
-private:
-    Texture* texture = nullptr;
-    std::map<char, Character> Characters;
-    int fontSize_;
 };
 
 #endif

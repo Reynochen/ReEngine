@@ -33,12 +33,12 @@ void Texture::createTexture(unsigned char* image) {
     glGenTextures(1, &ID);
     glBindTexture(type, ID);
 
-    glTexParameteri(type, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(type, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(type, GL_TEXTURE_WRAP_S, wrapParam);
+    glTexParameteri(type, GL_TEXTURE_WRAP_T, wrapParam);
     glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(type, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(type);
 
     glActiveTexture(0);

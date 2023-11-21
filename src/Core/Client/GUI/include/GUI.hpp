@@ -15,6 +15,7 @@ enum Anchor {
 
 class Shader;
 class Texture;
+class Font;
 
 class GUI {
     std::vector<Mesh*> meshes;
@@ -30,7 +31,7 @@ class GUI {
 
     void createStaticCube(float widthWin, float heightWin);
     void createFlexibleCube(float widthWin, float heightWin);
-    void updateMesh();
+    void updateMesh(bool isText);
     
     float rightPadding = 12.0f;
     float leftPadding = 12.0f;
@@ -53,7 +54,7 @@ public:
     void setPos(float x, float y);
 
 
-    void render(Shader* shader);
+    void render(Shader* shader, Font* font = nullptr);
 
 };
 

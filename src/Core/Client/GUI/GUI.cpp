@@ -8,6 +8,8 @@
 #include "Graphics.hpp"
 #include "Camera.hpp"
 
+#include "Font.hpp"
+
 GUI::GUI(Anchor pin, glm::vec4 color, bool Enable, float sqWidth, float sqHeight, const char* texPath, bool fillX, bool fillY) 
 {
         this->Enable = Enable;
@@ -38,7 +40,7 @@ void GUI::setPos(float x, float y) {
 }
 
 
-void GUI::render(Shader* shader)
+void GUI::render(Shader* shader, Font* font)
 {
     if(!Enable) return;
     glDisable(GL_DEPTH_TEST);
@@ -53,7 +55,6 @@ void GUI::render(Shader* shader)
     else createStaticCube(widthWin, heightWin);
     
     ModelMatrix = glm::mat4(1.f);
-
 
     // Anchor
     // Anchor localPin = pin;
@@ -82,14 +83,24 @@ void GUI::render(Shader* shader)
         break;
     }
     
-    shader->setMat4("model", ModelMatrix);
-    shader->setBool("texEmpty", texture->isEmpty());
-    if(!texture->isEmpty()) {
-        texture->bind();
-        shader->setInt("Texture", texture->getTexUnit());
+    // shader->setMat4("model", ModelMatrix);
+
+    if(font == nullptr) {
+        shader->setBool("texEmpty", texture->isEmpty());
+        if(!texture->isEmpty()) {
+            texture->bind();
+            shader->setInt("Texture", texture->getTexUnit());
+        }
+    }
+    else {
+        shader->setBool("texEmpty", false);
+        font->renderCharacter(shader, (int)glfwGetTime());
+        std::cout << (int)glfwGetTime() << '\n';
     }
 
-    updateMesh();
+    shader->setMat4("model", ModelMatrix);
+
+    updateMesh(font);
     for (auto& mesh : meshes) {        
         mesh->render();
     }
@@ -196,7 +207,7 @@ void GUI::createFlexibleCube(float widthWin, float heightWin)
     };
 }
 
-void GUI::updateMesh()
+void GUI::updateMesh(bool isText)
 {
     if(sqVertices == nullptr) return;
 
@@ -205,11 +216,11 @@ void GUI::updateMesh()
         meshes.clear();
     }
     meshes.push_back(new Mesh(new std::vector<Vertex>{
-                //Pos             //TexCoord            //Normal            //Color 
-        Vertex {sqVertices[0],    glm::vec2(0.f, 0.f),  glm::vec3(0.f),     glm::vec4(color)},
-        Vertex {sqVertices[1],    glm::vec2(1.f, 0.f),  glm::vec3(0.f),     glm::vec4(color)},
-        Vertex {sqVertices[2],    glm::vec2(1.f, 1.f),  glm::vec3(0.f),     glm::vec4(color)},
-        Vertex {sqVertices[3],    glm::vec2(0.f, 1.f),  glm::vec3(0.f),     glm::vec4(color)},  
+                //Pos             //TexCoord                                        //Normal            //Color 
+        Vertex {sqVertices[0],    isText ? glm::vec2(0.f, 1.f) : glm::vec2(0.f, 0.f),   glm::vec3(0.f), glm::vec4(color)}, //Left-bot
+        Vertex {sqVertices[1],    isText ? glm::vec2(1.f, 1.f) : glm::vec2(1.f, 0.f),   glm::vec3(0.f), glm::vec4(color)},
+        Vertex {sqVertices[2],    isText ? glm::vec2(1.f, 0.f) : glm::vec2(1.f, 1.f),   glm::vec3(0.f), glm::vec4(color)},
+        Vertex {sqVertices[3],    isText ? glm::vec2(0.f, 0.f) : glm::vec2(0.f, 1.f),   glm::vec3(0.f), glm::vec4(color)},  
     }));
     meshes[0]->mode = GL_TRIANGLE_FAN;
     delete sqVertices;

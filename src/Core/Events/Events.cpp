@@ -15,12 +15,15 @@ bool Events::firstMouse = true;
 float Events::deltaX,Events::deltaY;
 float Events::lastX = 0.0f, Events::lastY = 0.0f;
 float Events::lastFrame = 0.0f, Events::deltaTime = 0.0f;
+unsigned int Events::inputCode = 0;
+bool Events::pressAnything = false;
+
+#include <iostream>
 
 void Events::hideMouse(bool state) { /* Cursor switch function */
     if(window == nullptr) return;
 
-    if(state) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL + (state*2));
 }
 
 void Events::pullEvents() {
@@ -30,6 +33,7 @@ void Events::pullEvents() {
     deltaTime = glfwGetTime() - lastFrame;
     lastFrame = glfwGetTime();
 
+    pressAnything = false;
     glfwPollEvents();
 }
 
@@ -37,12 +41,10 @@ void Events::initialization(GLFWwindow* window) {
     glfwSetKeyCallback(window, keyCallBack);
     glfwSetMouseButtonCallback(window, mouseButtonCallBack);
     glfwSetCursorPosCallback(window, cursorPosCallBack);
+    glfwSetCharCallback(window, character_callback);
 
     Events::window = window;
     Events::hideMouse(true);
-    // /* Cursor disable command */
-    // if(hideMouse)
-    //     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Events::cursorPosCallBack(GLFWwindow* window, double xpos, double ypos) {
@@ -97,6 +99,17 @@ bool Events::jclicked(int button) {
         return lastButton;
     }
     return false;
+}
+
+void Events::character_callback(GLFWwindow* window, unsigned int codepoint) {
+    inputCode = (unsigned int) codepoint;
+    pressAnything = true;
+}
+unsigned int Events::getInputCode() {
+    return inputCode;
+}
+bool Events::pressAnyKey() {
+    return pressAnything;
 }
 
 float Events::getDeltaX() {return deltaX;}

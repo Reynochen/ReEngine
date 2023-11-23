@@ -12,6 +12,7 @@ out vec4 vColor;
 out float fragTime;
 
 uniform mat4 model;
+uniform mat4 projection;
 
 uniform float time;
 
@@ -27,5 +28,5 @@ void main()
     // vPos.y += sin(time + vPos.x*8)/8;
     // vPos.z += sin(time + vPos.y*8)/8;
 
-    gl_Position = model * vec4(vPos, 1.0);
+    gl_Position = projection * model * vec4(vPos, 1.0);
 }

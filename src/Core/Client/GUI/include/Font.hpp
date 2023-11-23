@@ -1,6 +1,9 @@
 #ifndef ENGINE_FONT
 #define ENGINE_FONT
 
+#include <ft2build.h>
+#include FT_FREETYPE_H 
+
 #include <glm/glm.hpp>
 #include <map>
 #include <string>
@@ -16,18 +19,17 @@ struct Character {
 };
 
 class Font {
-    std::map<char, Character> Characters;
+    std::map<wchar_t, Character> Characters;
     int fontSize_;
 
 
 public:
     Font(const char* fontPath, int fontSize);
 
-    ~Font() {
+    ~Font() {}
 
-    }
-
-    void renderCharacter(Shader* shader, int character);
+    void renderCharacter(Shader* shader, unsigned int character);
+    Character* getCharacter(unsigned int character);
 
 };
 

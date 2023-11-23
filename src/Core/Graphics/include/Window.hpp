@@ -21,8 +21,8 @@ public:
     static void swapBuffers();
     static void terminate();
 
-    static int getWidth();
-    static int getHeight();
+    static float getWidth();
+    static float getHeight();
 
     static GLFWwindow* getWindow();
 

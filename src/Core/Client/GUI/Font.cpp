@@ -5,6 +5,8 @@
 
 #include <glm/glm.hpp>
 
+#include <locale>
+#include <codecvt>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -27,7 +29,7 @@ Font::Font(const char* fontPath, int fontSize)
         return;
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 128);
 
     if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
         std::cout << "ERROR::FREETYPE: Failed to load Glyph.\n";
@@ -35,39 +37,47 @@ Font::Font(const char* fontPath, int fontSize)
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    std::wstring text = L"Ыauptmen?";
-    std::wstring::iterator it = text.begin();
-    for(wchar_t c = 0; c < 256; c++) {
+    for(unsigned int c = 0; c < 1106; c++) {
+        std::wostringstream wss;
+        wss << (wchar_t)c;
+        std::wstring ch = wss.str();
+
+        std::wstring::iterator it = ch.begin();
+
         if (FT_Load_Char(face, *it, FT_LOAD_RENDER)) {
             std::cout << "ERROR::FREETYPE: Failed to load Glyph\n";
             continue;
         }
 
-        Texture* tex = new Texture(face->glyph->bitmap.buffer, GL_TEXTURE_2D, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_CLAMP_TO_EDGE);
+        Texture* texture = new Texture(face->glyph->bitmap.buffer, GL_TEXTURE_2D, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_CLAMP_TO_EDGE);
         
         Character character = {
-            tex,
+            texture,
             glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
             face->glyph->advance.x
         };
-        Characters.insert(std::pair<char, Character>(c, character));
+        Characters.insert(std::pair<wchar_t, Character>(c, character));
     }
 
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 }
 
-void Font::renderCharacter(Shader* shader, int character) {
+Character* Font::getCharacter(unsigned int character) {
+    if (character > 1105) return &Characters[0];
+    return &Characters[character];
+}
+
+void Font::renderCharacter(Shader* shader, unsigned int character) {
     glActiveTexture(0);
 
-    std::string::const_iterator c;
-    // for (c = character.begin(); c != character.end(); c++)
-    // {
-        Character ch = Characters[character];
+    Character ch;
+    
+    if(character < 1106) ch = Characters[character];
+    else ch = Characters[0];
 
-        ch.texture->bind();
-        shader->setInt("Texture", ch.texture->getTexUnit());
-        // std::cout <<  << '\n';   
-    // }
+    ch.texture->bind();
+    shader->setInt("Texture", ch.texture->getTexUnit());
+    shader->setInt("texEmpty", ch.texture->isEmpty());
 }

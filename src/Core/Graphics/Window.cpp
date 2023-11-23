@@ -92,9 +92,9 @@ void Window::fpsLimit() {
     _lastTime += 1.0/_fpsLock;
 }
 
-int Window::getWidth() {
+float Window::getWidth() {
     return _width;
 }
-int Window::getHeight() {
+float Window::getHeight() {
     return _height;
 }

@@ -94,8 +94,8 @@ void GUI::render(Shader* shader, Font* font)
     }
     else {
         shader->setBool("texEmpty", false);
-        font->renderCharacter(shader, (int)glfwGetTime());
-        std::cout << (int)glfwGetTime() << '\n';
+        // font->renderCharacter(shader, (int)glfwGetTime());
+        // std::cout << (int)glfwGetTime() << '\n';
     }
 
     shader->setMat4("model", ModelMatrix);

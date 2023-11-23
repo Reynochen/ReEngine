@@ -20,6 +20,7 @@
 
 #include "GUI.hpp"
 #include "Font.hpp"
+#include "Label.hpp"
 
 Application::Application() 
 {
@@ -37,17 +38,14 @@ Application::~Application()
 
 void Application::run() 
 {
-    //Font test
-    Font fontTest("res/Fonts/arial.ttf", 24);
-
+    Label testLabel("res/Fonts/PFReminderPro-Bold.TTF", glm::vec2(1.5f));
+    testLabel.scale = 0.25;
+    Label testLabel2("res/Fonts/arial.ttf", glm::vec2(1.5f,0.8f));
+    
     //GUI widget test
-    GUI GUIchat(BOTTOM, glm::vec4(glm::vec3(0.0f), 0.5f), false, 0.25, 0.25);
+    GUI GUIchat(BOTTOM, glm::vec4(glm::vec3(0.0f), 0.5f), false, 10.25, 10.25);
     GUIchat.setY(150);
     GUIchat.flexible = true;
-
-    GUI GUItext(LEFTBOT, glm::vec4(glm::vec3(1.f, 1.f, 1.f), 1.f), false, 0.15, 0.20, "res/Texture/amogus.png");
-    GUItext.setY(150);
-    GUItext.setX(200);
 
     //Entities controller
     ENTController ENTCtrl;
@@ -60,6 +58,9 @@ void Application::run()
 
     Entity* entity;
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
+    
+    std::string textChat;
+    unsigned int lastChar;
     while (!Window::shouldClose())
     {
         if (Events::jpressed(GLFW_KEY_ESCAPE)) {
@@ -67,41 +68,26 @@ void Application::run()
                 camera.EnableMove = true;
                 Events::hideMouse(camera.EnableMove); 
                 GUIchat.Enable = !GUIchat.Enable;
-                GUItext.Enable = !GUItext.Enable;
             }
             else
                 Window::shouldClose(true);
         }
         if (Events::jpressed(GLFW_KEY_Z))
             ENTCtrl.removeEntity();
-        if (Events::jpressed(GLFW_KEY_0))
+        if (Events::jpressed(GLFW_KEY_0) && !GUIchat.Enable)
             ENTCtrl.addEntity(camera.getPos(), "Monkey");
         if (Events::jpressed(GLFW_KEY_SLASH)) {
             camera.EnableMove = false;
             Events::hideMouse(camera.EnableMove); 
             GUIchat.Enable = true;
-            GUItext.Enable = true;
         }
-        if(Events::jpressed(GLFW_KEY_F))
-            GUIchat.flexible = !GUIchat.flexible;
-        
-        if(Events::pressed(GLFW_KEY_LEFT)) {
-            GUItext.setX(-140 * Events::getDeltaTime());
-        }
-        if(Events::pressed(GLFW_KEY_RIGHT)) {
-            GUItext.setX(140 * Events::getDeltaTime());
-        }
-        if(Events::pressed(GLFW_KEY_UP)) {
-            GUItext.setY(230 * Events::getDeltaTime());
-        }
-        if(Events::pressed(GLFW_KEY_DOWN)) {
-            GUItext.setY(-230 * Events::getDeltaTime());
+        if (Events::jpressed(GLFW_KEY_UP)) {
+            testLabel.Scalable = !testLabel.Scalable;
+            testLabel2.Scalable = !testLabel2.Scalable;
         }
 
-        if(Events::jpressed(GLFW_KEY_1))
-            GUIchat.scalableX = !GUIchat.scalableX;
-
-
+        if(Events::pressAnyKey() && GUIchat.Enable)
+            testLabel.text += Events::getInputCode(); 
         // entity = ENTCtrl.getEntity(0);
         // if (entity != nullptr)
         //     entity->rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
@@ -112,8 +98,9 @@ void Application::run()
 
         ENTCtrl.renderEntities(shader, camera);
 
+        testLabel.renderText(GUIshader);
+        // testLabel2.renderText(GUIshader);
         GUIchat.render(&GUIshader);
-        GUItext.render(&GUIshader, &fontTest);
         Window::swapBuffers();
         Events::pullEvents();
     }

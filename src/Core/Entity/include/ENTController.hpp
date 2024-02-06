@@ -26,7 +26,7 @@ public:
 
     void renderEntities(Shader &shader, Camera &camera);
 
-    void addEntity(glm::vec3 position, const char* modelPath = nullptr, const char* texPath = "");
+    int addEntity(glm::vec3 position, const char* modelPath = nullptr, const char* texPath = "");
     void removeEntity();
 
 };

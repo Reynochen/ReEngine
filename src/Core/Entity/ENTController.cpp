@@ -61,7 +61,7 @@ void ENTController::loadModels(std::string pathToModels)
     }
 }
 
-void ENTController::addEntity(glm::vec3 position, const char* modelName, const char* texPath) 
+int ENTController::addEntity(glm::vec3 position, const char* modelName, const char* texPath) 
 {
     Entity** entityBuf = entities;                
     int modelID = -1;
@@ -81,7 +81,7 @@ void ENTController::addEntity(glm::vec3 position, const char* modelName, const c
     if(modelID == -1) 
     {
         std::cerr << "ERROR::CREATE_ENTITY::Dont found model: " << modelName << '\n'; 
-        return;
+        return -1;
     }
 
     entityCount++;
@@ -95,6 +95,7 @@ void ENTController::addEntity(glm::vec3 position, const char* modelName, const c
     delete[] entityBuf;
     entities[entityCount-1] = new Entity(position, models[modelID], texPath);
     std::cout << entityCount << '\n';
+    return 0;
 }
 
 void ENTController::renderEntities(Shader &shader, Camera &camera) 

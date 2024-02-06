@@ -38,9 +38,8 @@ Application::~Application()
 
 void Application::run() 
 {
-    Label testLabel("res/Fonts/PFReminderPro-Bold.TTF", glm::vec2(1.5f));
-    testLabel.scale = 0.25;
-    Label testLabel2("res/Fonts/arial.ttf", glm::vec2(1.5f,0.8f));
+    Label chatLabel("res/Fonts/PFReminderPro-Bold.TTF", glm::vec2(0.15f));
+    chatLabel.scale = 0.25;
     
     //GUI widget test
     GUI GUIchat(BOTTOM, glm::vec4(glm::vec3(0.0f), 0.5f), false, 10.25, 10.25);
@@ -59,12 +58,12 @@ void Application::run()
     Entity* entity;
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
     
-    std::string textChat;
-    unsigned int lastChar;
+    std::string lastModelCreate;
     while (!Window::shouldClose())
     {
         if (Events::jpressed(GLFW_KEY_ESCAPE)) {
             if(GUIchat.Enable) {
+                chatLabel.text.clear();
                 camera.EnableMove = true;
                 Events::hideMouse(camera.EnableMove); 
                 GUIchat.Enable = !GUIchat.Enable;
@@ -72,34 +71,56 @@ void Application::run()
             else
                 Window::shouldClose(true);
         }
-        if (Events::jpressed(GLFW_KEY_Z))
-            ENTCtrl.removeEntity();
-        if (Events::jpressed(GLFW_KEY_0) && !GUIchat.Enable)
-            ENTCtrl.addEntity(camera.getPos(), "Monkey");
-        if (Events::jpressed(GLFW_KEY_SLASH)) {
-            camera.EnableMove = false;
-            Events::hideMouse(camera.EnableMove); 
-            GUIchat.Enable = true;
-        }
-        if (Events::jpressed(GLFW_KEY_UP)) {
-            testLabel.Scalable = !testLabel.Scalable;
-            testLabel2.Scalable = !testLabel2.Scalable;
-        }
+        if(!GUIchat.Enable) {
+            if (Events::jpressed(GLFW_KEY_Z))
+                ENTCtrl.removeEntity();
+            if (Events::jpressed(GLFW_KEY_SLASH)) {
+                camera.EnableMove = false;
+                Events::hideMouse(camera.EnableMove); 
+                chatLabel.text += L'/';
+                GUIchat.Enable = true;
+            }
+            if (Events::jpressed(GLFW_KEY_UP)) {
+                chatLabel.Scalable = !chatLabel.Scalable;
+            }
+            if (Events::jpressed(GLFW_KEY_0)) {
+                ENTCtrl.addEntity(camera.getPos(), lastModelCreate.c_str());
+            }
+        } else {
+            if(Events::pressAnyKey() && GUIchat.Enable)
+                chatLabel.text += Events::getInputCode(); 
+            
+            if(Events::jpressed(GLFW_KEY_BACKSPACE) && chatLabel.text.length() > 0)
+                chatLabel.text.pop_back(); 
+            
+            if(Events::jpressed(GLFW_KEY_ENTER)) {
+                std::wstring command = chatLabel.text;
+                if(command[0] == L'/') {
 
-        if(Events::pressAnyKey() && GUIchat.Enable)
-            testLabel.text += Events::getInputCode(); 
-        // entity = ENTCtrl.getEntity(0);
-        // if (entity != nullptr)
-        //     entity->rotation = glm::vec3(0.f, (float)glfwGetTime()*glm::radians(50.f) ,0.f);
+                    if (command.find(L"/create ") != std::wstring::npos) {
+                        std::string commandStr(command.begin(), command.end());
+                        
+                        if(!ENTCtrl.addEntity(camera.getPos(), commandStr.erase(0, commandStr.find_first_of(" ")+1).c_str()))
+                            lastModelCreate = commandStr.erase(0, commandStr.find_first_of(" ")+1);
+                    }
+            
+                }
+
+
+                chatLabel.text.clear();
+                camera.EnableMove = true;
+                Events::hideMouse(camera.EnableMove); 
+                GUIchat.Enable = !GUIchat.Enable;
+            }
+        }
         
         entity = ENTCtrl.getEntity(1);
         if (entity != nullptr)
-            entity->scale = glm::vec3(sin((float)glfwGetTime()*glm::radians(50.f))*5);
+            entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5, 0.f);
 
         ENTCtrl.renderEntities(shader, camera);
 
-        testLabel.renderText(GUIshader);
-        // testLabel2.renderText(GUIshader);
+        chatLabel.renderText(GUIshader);
         GUIchat.render(&GUIshader);
         Window::swapBuffers();
         Events::pullEvents();

@@ -4,6 +4,7 @@
 #include<sstream>
 #include<vector>
 #include<string>
+#include <cstdio>
 
 #include<glm/glm.hpp>
 
@@ -73,11 +74,11 @@ void ModelLoader::readCorner(std::string& word, std::vector<glm::vec3>&v, std::v
     std::vector<std::string> face = split(word, '/');
 
     //Pos
-    glm::vec3 pos = v[std::stol(face[0]) - 1];
+    glm::vec3 pos = v[std::stoi(face[0]) - 1];
     //tex coords
-    glm::vec2 tex = vt[std::stol(face[1]) - 1];
+    glm::vec2 tex = vt[std::stoi(face[1]) - 1];
     //Normal
-    glm::vec3 normal = vn[std::stol(face[2]) - 1];
+    glm::vec3 normal = vn[std::stoi(face[2]) - 1];
 
     vert.push_back(Vertex {pos, tex, normal, glm::vec4(1.f)});
 }

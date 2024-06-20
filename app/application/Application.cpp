@@ -51,9 +51,9 @@ void Application::run()
     ENTCtrl.addEntity(glm::vec3(0.f, 0.f, 0.f), "");
 
     //Shaders
-    Shader shader("res/shaders/main/main.vs", "res/shaders/main/main.fs");
+    Shader* shader = new Shader("res/shaders/main/main.vs", "res/shaders/main/main.fs");
     Shader GUIshader("res/shaders/GUI/main.vs", "res/shaders/GUI/main.fs");
-    Camera camera(shader); //Create camera
+    Camera camera(*shader); //Create camera
 
     Entity* entity;
     glClearColor(0.35, 0.77, 0.94, 0); //Sky color
@@ -103,9 +103,20 @@ void Application::run()
                         if(!ENTCtrl.addEntity(camera.getPos(), commandStr.erase(0, commandStr.find_first_of(" ")+1).c_str()))
                             lastModelCreate = commandStr.erase(0, commandStr.find_first_of(" ")+1);
                     }
+                    if (command.find(L"/shader ") != std::wstring::npos) {
+                        delete shader;
+
+                        std::string commandStr(command.begin(), command.end());
+                        std::string shaderName = commandStr.erase(0, commandStr.find_first_of(" ")+1).c_str();
+
+                        std::string vsDir("res/shaders/main/" + shaderName + ".vs");
+                        std::string fsDir("res/shaders/main/" + shaderName + ".fs");
+
+                        shader = new Shader(vsDir.c_str(), fsDir.c_str());
+                        camera.shader = shader;
+                    }
             
                 }
-
 
                 chatLabel.text.clear();
                 camera.EnableMove = true;
@@ -118,13 +129,15 @@ void Application::run()
         if (entity != nullptr)
             entity->rotation = glm::vec3(0.f, sin((float)glfwGetTime()*glm::radians(50.f))*5, 0.f);
 
-        ENTCtrl.renderEntities(shader, camera);
+        ENTCtrl.renderEntities(*shader, camera);
 
         chatLabel.renderText(GUIshader);
         GUIchat.render(&GUIshader);
         Window::swapBuffers();
         Events::pullEvents();
     }
+
+    delete shader;
 }
 
 Application* CreateApplication() 
